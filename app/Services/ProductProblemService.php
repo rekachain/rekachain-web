@@ -27,6 +27,7 @@ class ProductProblemService extends BaseCrudService implements ProductProblemSer
         $productProblem->product_problem_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
+            'applied_status' => $data['status'] ?? $productProblem->status,
         ]);
 
         return $productProblem;

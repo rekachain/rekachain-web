@@ -17,7 +17,7 @@ export default function ({ project }: { project: ProjectResource }) {
     });
 
     const syncPanels = withLoading(async () => {
-        const data = await projectService.getPanels(project.id, filters);
+        const data = await projectService.getQtyPanels(project.id, filters);
         setPanelResponse(data);
 
         setPanelResponseMeta({

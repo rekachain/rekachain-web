@@ -190,6 +190,10 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_UPDATE_INITIAL_DATE = 'web.project.update.initial.date';
 
+    case WEB_PROJECT_GET_COMPONENTS = 'web.project.get.components';
+
+    case WEB_PROJECT_GET_PANELS = 'web.project.get.panels';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
@@ -344,6 +348,8 @@ enum IntentEnum: string {
 
     case WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'web.returned.product.add.returned.product.with.note';
 
+    case WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST = 'web.returned.product.add.returned.product.request';
+
     case WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM = 'web.returned.product.import.returned.product.and.product.problem';
 
     case WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM = 'web.returned.product.import.product.problem';
@@ -367,4 +373,14 @@ enum IntentEnum: string {
     case WEB_PRODUCT_RESTOCK_INITIATE_PROJECT = 'web.product.restock.initiate.project';
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
+
+    case WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY = 'web.dashboard.get.returned.product.status.summary';
+    case WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE = 'web.dashboard.get.returned.product.time.difference';
+    case WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX = 'web.dashboard.get.returned.product.time.min.max';
+    case WEB_DASHBOARD_GET_REPLACEMENT_STOCK = 'web.dashboard.get.replacement.stock';
+    case WEB_DASHBOARD_GET_PRODUCT_PROBLEM = 'web.dashboard.get.product.problem';
+    case WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS = 'web.dashboard.get.vendor.problem.components';
+    case WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS = 'web.dashboard.dispatch.product.problem.analysis';
+    case WEB_DASHBOARD_GET_WORKSTATION_STATUS = 'web.dashboard.get.workstation.status';
+    case WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS = 'web.dashboard.get.trainset.attachment.status';
 }

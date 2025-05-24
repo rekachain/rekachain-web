@@ -12,6 +12,8 @@ class ProductProblemNoteResource extends JsonResource {
             'product_problem_id' => $this->product_problem_id,
             'product_problem' => $this->whenLoaded('product_problem'),
             'note' => $this->note,
+            'applied_status' => $this->applied_status,
+            'localized_applied_status' => $this->applied_status->getLabel(),
             'user_id' => $this->user_id,
             'user' => $this->whenLoaded('user'),
             'user_name' => $this->user->name,

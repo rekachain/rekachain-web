@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Resources\UserResource;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 test('user can view list of returned-product-notes', function () {
@@ -46,12 +47,12 @@ test('user can view ReturnedProductNote details', function () {
     $response = actAsWorkerAftersales()->getJson("/returned-product-notes/{$model->id}");
 
     $response->assertStatus(200)
-        ->assertJson([
+        ->assertJsonFragment([
             'id' => $model->id, 
             'returned_product_id' => $model->returned_product_id, 
             'note' => $model->note, 
             'user_id' => $model->user_id, 
-            'user' => $model->user->toArray(), 
+            'user' => UserResource::make($model->user)->resolve(), 
         ]);
 });
 

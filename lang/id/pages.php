@@ -36,10 +36,13 @@ return [
             'title' => 'Halaman Utama',
             'welcome' => 'Selamat datang di Halaman Utama',
             'project' => 'Proyek',
+            'returned_product' => 'Produk Retur',
+            'show_problem_analysis' => 'Tampilkan Analisis Masalah',
             'all_project' => 'Semua Proyek',
             'all_trainset_status' => 'Status Semua Trainset',
             'select_project' => 'Pilih Proyek',
             'progress_workshops' => 'Progress untuk tiap Workshop',
+            'progress_workshops_sub' => 'Workshop Sukosari, Candisewu',
             'progress_panels' => 'Progress untuk tiap Panel',
             'panels_title' => 'Progress Panel pada WS Assembly',
             'all_workstations' => 'Progress Semua Workstation',
@@ -53,6 +56,92 @@ return [
             'panel_trainset_sub' => 'Semua Panel pada Trainset',
             'panel_progress_trainset' => 'Progress Panel Trainset ',
             'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
+            'returned_product_status' => 'Status Produk Retur',
+            'returned_product_time_difference' => 'Perbedaan Waktu Pengerjaan Produk Retur',
+            'vendor_problems' => 'Masalah Vendor',
+            'returned_product_time_min_max' => 'Pengerjaan Produk Retur',
+            'replacement_stock_threshold' => 'Stok Suku Cadang',
+            'trainset_status_progress' => 'Progress Status Trainset',
+        ],
+        'product_problem_analysis' => [
+            'title' => 'Analisis Masalah Produk',
+            'buttons' => [
+                'dispatch' => 'Analisa Masalah',
+            ],
+        ],
+        'partials' => [
+            'partials' => [
+                'product_problem_analysis_detail_dialog' => [
+                    'title' => 'Detail Analisis Masalah Produk',
+                    'subtitle' => 'Detail analisis masalah produk :component_name untuk periode :date_range.',
+                    'labels' => [
+                        'findings' => 'Temuan:',
+                        'summary' => 'Ringkasan Masalah:',
+                        'cause' => 'Kemungkinan Penyebab:',
+                        'solution' => 'Rekomendasi Solusi:',
+                    ],
+                ],
+            ],
+            'filters' => [
+                'project_placeholder' => 'Pilih Proyek',
+                'trainset_placeholder' => 'Pilih Trainset',
+                'use_merged' => 'Mode Detail',
+            ],
+            'returned_product_time_diff_chart' => [
+                'headers' => [
+                    'year_month' => 'Waktu Retur',
+                    'avg_duration' => 'Rata-Rata Lama Pengerjaan',
+                    'total_returned' => 'Total Retur',
+                    'total_problem' => 'Total Masalah',
+                ],
+                'fields' => [
+                    'day' => 'Hari',
+                    'hour' => 'Jam',
+                    'minute' => 'Menit',
+                ],
+            ],
+            'returned_product_progress_time_min_max_chart' => [
+                'label' => [
+                    'min_duration' => 'Min. Waktu Pengerjaan',
+                    'max_duration' => 'Max. Waktu Pengerjaan',
+                ],
+                'axis' => [
+                    'day' => ':count h',
+                    'hour' => ':count j',
+                    'minute' => ':count m',
+                ],
+                'tooltip' => [
+                    'title' => 'Waktu Pengerjaan',
+                    'min_duration' => 'Min. ',
+                    'max_duration' => 'Max. ',
+                ],
+            ],
+            'replacement_stock_threshold_stack_bar_chart' => [
+                'label' => [
+                    'qty' => 'Jumlah',
+                    'threshold' => 'Batas Restok',
+                ],
+                'tooltip' => [
+                    'need_restock' => 'Perlu Restok',
+                ],
+            ],
+            'vendor_problem_data_view' => [
+                'headers' => [
+                    'vendor_name' => 'Vendor',
+                    'total_sent' => 'Mengirim',
+                    'total_problem' => 'Total Masalah',
+                ],
+            ],
+            'product_problem_analysis_data_view' => [
+                'headers' => [
+                    'component_name' => 'Nama Produk',
+                    'date_range' => 'Periode',
+                    'summary' => 'Ringkasan Masalah',
+                    'cause' => 'Kemungkinan Penyebab',
+                    'solution' => 'Rekomendasi Solusi',
+                ],
+                'no_data' => 'Tidak Ada Data',
+            ],
         ],
     ],
     'dashboard_trainset' => [
@@ -2432,7 +2521,8 @@ return [
             'table_headers' => [
                 'component_name' => 'Nama Komponen',
                 'description' => 'Deskripsi',
-                'note' => 'Note',
+                'note' => 'Catatan',
+                'cause' => 'Penyebab',
                 'status' => 'Status',
             ],
             'product_problems' => [
@@ -2553,6 +2643,7 @@ return [
                     'title' => 'Perbarui Status',
                     'description' => 'Perbarui status dari Progress Produk yang dipilih.',
                     'select_placeholder' => 'Pilih Status',
+                    'cause_placeholder' => 'Pilih Penyebab',
                 ],
                 'messages' => [
                     'updated' => 'Status Produk berhasil diperbarui!',
@@ -2632,16 +2723,21 @@ return [
             'partials' => [
                 'add_request' => [
                     'title' => 'Buat Permintaan',
+                    'description' => 'Buat permintaan atau keluhan untuk retur produk.',
                     'fields' => [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
                         'type' => 'Tipe',
+                        'project' => 'Proyek',
+                        'project_placeholder' => 'Pilih Proyek',
                         'component' => 'Komponen',
                         'component_placeholder' => 'Pilih Komponen',
                         'panel' => 'Panel',
                         'panel_placeholder' => 'Pilih Panel',
                         'qty' => 'Jumlah',
                         'serial_number' => 'Nomor Seri',
+                        'type_selection' => 'Tambah Berdasarkan Pesanan',
+                        'qty_serial_number' => 'Tambah Berdasarkan Nomor Seri',
                     ],
                     'buttons' => [
                         'submit' => 'Kirim Permintaan',

@@ -1,4 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/ReturnedProduct/Partials/Partials/Filters';
 import { returnedProductService } from '@/Services/returnedProductService';
@@ -22,12 +23,23 @@ export default function () {
         orderBy: 'created_at',
     });
 
+    const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
+        Record<string, string>
+    >({});
+
+    const syncLocalizedEnums = withLoading(async () => {
+        await fetchEnumLabels('ReturnedProductStatusEnum')
+            .then(setLocalizedReturnedProductStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    });
+
     const syncReturnedProducts = withLoading(async () => {
         const res = await returnedProductService.getAll(filters);
         setReturnedProductResponse(res);
     });
 
     useEffect(() => {
+        syncLocalizedEnums();
         void syncReturnedProducts();
     }, [filters, setLocale]);
 
@@ -47,7 +59,11 @@ export default function () {
         <div className='space-y-4'>
             {returnedProductResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} />
+                    <Filters
+                        setFilters={setFilters}
+                        localizedReturnedProductStatuses={localizedReturnedProductStatuses}
+                        filters={filters}
+                    />
                     <div className='hidden md:block'>
                         <ReturnedProductTableView
                             returnedProductResponse={returnedProductResponse}

@@ -49,3 +49,5 @@ export * from './ReturnedProductNoteResource';
 export * from './ReturnedProductResource';
 
 export * from './ProductRestockResource';
+
+export * from './ProductProblemAnalysisResource';

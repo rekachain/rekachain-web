@@ -28,6 +28,13 @@ return [
         'send' => 'Sender',
         'receive' => 'Receiver',
     ],
+    'App\Support\Enums\PanelAttachmentStatusEnum' => [
+        'material_in_transit' => 'Material In Transit',
+        'material_accepted' => 'Material Accepted',
+        'in_progress' => 'In Progress',
+        'pending' => 'Pending',
+        'done' => 'Done',
+    ],
     'App\Support\Enums\PanelAttachmentHandlerHandlesEnum' => [
         'prepare' => 'Prepare',
         'send' => 'Sender',
@@ -45,6 +52,12 @@ return [
         'progress' => 'In Progress',
         'changed' => 'Changed',
         'draft' => 'Draft',
+        're-set' => 'Re-setting',
+    ],
+    'App\Support\Enums\ProductProblemCauseEnum' => [
+        'workman_ship' => 'Workman Ship',
+        'quality' => 'Quality',
+        'operational' => 'Operational',
     ],
     'App\Support\Enums\ProductRestockStatusEnum' => [
         'requested' => 'Requested',

@@ -64,7 +64,7 @@ test('user can view ReturnedProduct details', function () {
             'buyer_id' => $model->buyer_id, 
             'buyer' => UserResource::make($model->buyer)->resolve(),
             'qty' => $model->qty, 
-            'serial_number' => $model->serial_number,
+            'serial_number' => (string) $model->serial_number,
         ]);
 });
 

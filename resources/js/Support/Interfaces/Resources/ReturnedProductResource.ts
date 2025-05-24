@@ -18,4 +18,5 @@ export interface ReturnedProductResource extends Resource, ReturnedProduct {
     image: string;
     returned_product_notes?: ReturnedProductNoteResource[];
     latest_returned_product_note?: ReturnedProductNoteResource;
+    project_sub?: string;
 }
