@@ -45,6 +45,7 @@ import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import ResolveProductProblem from './Partials/ResolveProductProblem';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t, setLocale } = useLaravelReactI18n();
@@ -145,16 +146,23 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     name: data.product_return?.name || '',
                                 })}
                             </h1>
-                            <Button
-                                variant='warning'
-                                size={'sm'}
-                                onClick={() =>
-                                    router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id))
-                                }
-                                className='mx-4'
-                            >
-                                <RiEdit2Line />
-                            </Button>
+                            {[
+                                ReturnedProductStatusEnum.DRAFT,
+                                ReturnedProductStatusEnum.PROGRESS,
+                            ].includes(data.status) && (
+                                <Button
+                                    variant='warning'
+                                    size={'sm'}
+                                    onClick={() =>
+                                        router.visit(
+                                            route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id),
+                                        )
+                                    }
+                                    className='mx-4'
+                                >
+                                    <RiEdit2Line />
+                                </Button>
+                            )}
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-4'>
                             <div className='col-span-3 flex flex-col gap-3'>
@@ -370,22 +378,30 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     {t('action.show')}
                                                 </Link>
                                             )} */}
-                                                {checkPermission(
-                                                    PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
-                                                ) && (
-                                                    <UpdateProductProblemStatus
-                                                        productProblem={productProblem}
-                                                        localizedStatuses={
-                                                            localizedProductProblemStatuses
-                                                        }
-                                                        localizedCauses={
-                                                            localizedProductProblemCauses
-                                                        }
-                                                        handleSyncReturnedProduct={
-                                                            handleSyncReturnedProduct
-                                                        }
-                                                    />
-                                                )}
+                                                {![
+                                                    ReturnedProductStatusEnum.DONE,
+                                                    ReturnedProductStatusEnum.SCRAPPED,
+                                                ].includes(data.status) &&
+                                                    [
+                                                        ProductProblemStatusEnum.DRAFT,
+                                                        ProductProblemStatusEnum.PROGRESS,
+                                                    ].includes(productProblem.status) &&
+                                                    checkPermission(
+                                                        PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
+                                                    ) && (
+                                                        <UpdateProductProblemStatus
+                                                            productProblem={productProblem}
+                                                            localizedStatuses={
+                                                                localizedProductProblemStatuses
+                                                            }
+                                                            localizedCauses={
+                                                                localizedProductProblemCauses
+                                                            }
+                                                            handleSyncReturnedProduct={
+                                                                handleSyncReturnedProduct
+                                                            }
+                                                        />
+                                                    )}
                                                 {checkPermission(
                                                     PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE,
                                                 ) && (

@@ -15,6 +15,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
 import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import UpdateProductRestockStatus from './Partials/UpdateProductRestockStatus';
 
 export default function ProductRestockTableView({
     productRestockResponse,
@@ -126,13 +127,13 @@ export default function ProductRestockTableView({
                                             {t('action.show')}
                                         </Button>
                                     )}
-                                {/* {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                {[ProductRestockStatusEnum.REQUESTED, ProductRestockStatusEnum.PROGRESS].includes(productRestock.status) && checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                     <UpdateProductRestockStatus
                                         productRestock={productRestock}
                                         localizedStatuses={localizedStatuses}
                                         handleSyncProductRestock={handleSyncProductRestock}
                                     />
-                                )} */}
+                                )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) &&
                                     productRestock.status ===
                                         ProductRestockStatusEnum.REQUESTED && (
