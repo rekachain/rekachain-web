@@ -132,6 +132,7 @@ export default function ProductRestockTableView({
                                         productRestock={productRestock}
                                         localizedStatuses={localizedStatuses}
                                         handleSyncProductRestock={handleSyncProductRestock}
+                                        disabled={isSelecting}
                                     />
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) &&

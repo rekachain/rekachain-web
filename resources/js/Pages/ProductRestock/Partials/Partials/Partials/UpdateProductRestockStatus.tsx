@@ -28,10 +28,12 @@ export default function ({
     localizedStatuses,
     productRestock,
     handleSyncProductRestock,
+    disabled,
 }: {
     localizedStatuses: Record<string, string>;
     productRestock: ProductRestockResource;
     handleSyncProductRestock: () => Promise<void>;
+    disabled: boolean;
 }) {
     const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
@@ -57,7 +59,7 @@ export default function ({
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className={'w-fit'}>
+            <DialogTrigger className={`w-fit ${disabled ? 'opacity-50' : ''}`} disabled={disabled}>
                 {t(
                     'pages.product_restock.partials.partials.partials.update_product_restock_status.buttons.update_status',
                 )}
