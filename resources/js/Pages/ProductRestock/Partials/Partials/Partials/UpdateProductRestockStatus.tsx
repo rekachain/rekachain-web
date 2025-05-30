@@ -1,4 +1,4 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -59,7 +59,13 @@ export default function ({
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className={`w-fit ${disabled ? 'opacity-50' : ''}`} disabled={disabled}>
+            <DialogTrigger 
+                className={buttonVariants({
+                    className: `w-fit ${disabled ? 'opacity-50' : ''}`, 
+                    variant: 'outline'
+                })} 
+                disabled={disabled}
+            >
                 {t(
                     'pages.product_restock.partials.partials.partials.update_product_restock_status.buttons.update_status',
                 )}

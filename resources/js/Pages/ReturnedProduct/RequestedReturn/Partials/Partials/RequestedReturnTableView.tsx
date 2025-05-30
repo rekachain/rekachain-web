@@ -71,14 +71,14 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.updated_at}</TableCell>
                             {(returnedProduct.status === ReturnedProductStatusEnum.REQUESTED ||
                                 checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE)) && (
-                                <TableCell>
+                                <TableCell className='flex gap-2 flex-wrap'>
                                     {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                         <Link
                                             href={route(
                                                 `${ROUTES.RETURNED_PRODUCTS}.edit`,
                                                 returnedProduct.id,
                                             )}
-                                            className={buttonVariants({ variant: 'link' })}
+                                            className={buttonVariants({ variant: 'outline' })}
                                         >
                                             {t('action.edit')}
                                         </Link>
@@ -86,7 +86,7 @@ export default function ReturnedProductTableView({
                                     {returnedProduct.status ===
                                         ReturnedProductStatusEnum.REQUESTED && (
                                         <Button
-                                            variant='link'
+                                            variant='outline'
                                             onClick={() =>
                                                 handleRequestedReturnDeletion(returnedProduct.id)
                                             }

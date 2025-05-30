@@ -114,11 +114,11 @@ export default function ProductRestockTableView({
                             </TableCell>
                             <TableCell>{productRestock.localized_status}</TableCell>
 
-                            <TableCell>
+                            <TableCell className='flex gap-2 flex-wrap'>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) &&
                                     productRestock.project_url && (
                                         <Button
-                                            variant={'link'}
+                                            variant={'outline'}
                                             onClick={() =>
                                                 router.visit(productRestock.project_url ?? '#')
                                             }
@@ -139,7 +139,7 @@ export default function ProductRestockTableView({
                                     productRestock.status ===
                                         ProductRestockStatusEnum.REQUESTED && (
                                         <Button
-                                            variant='link'
+                                            variant='outline'
                                             onClick={() =>
                                                 handleProductRestockDeletion(productRestock.id)
                                             }
