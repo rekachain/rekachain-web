@@ -29,8 +29,9 @@ class ReturnedProductController extends Controller {
         $perPage = $request->get('perPage', 10);
         if (!checkPermissions(PermissionEnum::RETURNED_PRODUCT_READ, true)) {
             $request->query->add(['column_filters' => ['buyer_id' => auth()->id()]]);
+        } else {
+            $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => [ReturnedProductStatusEnum::REQUESTED->value]])]);
         }
-        $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => [ReturnedProductStatusEnum::REQUESTED->value]])]);
         if ($this->ajax()) {
             return ReturnedProductResource::collection($this->returnedProductService->getAllPaginated($request->query(), $perPage));
         }

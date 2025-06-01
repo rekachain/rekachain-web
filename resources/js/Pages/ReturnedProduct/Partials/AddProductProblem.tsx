@@ -240,6 +240,11 @@ const AddProductProblem = ({
                                 {data.status !== ProductProblemStatusEnum.DRAFT && (
                                     <>
                                         <div className='mt-4 space-y-2 rounded bg-background-2'>
+                                            <Label>
+                                                {t(
+                                                    'pages.returned_product.partials.add_product_problem.dialogs.fields.cause',
+                                                )}
+                                            </Label>
                                             <Select
                                                 value={data.cause}
                                                 onValueChange={(value) =>

@@ -72,7 +72,19 @@ export default function ReturnedProductTableView({
                             {(returnedProduct.status === ReturnedProductStatusEnum.REQUESTED ||
                                 checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE)) && (
                                 <TableCell className='flex gap-2 flex-wrap'>
-                                    {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                    {returnedProduct.status !==
+                                        ReturnedProductStatusEnum.REQUESTED ? (
+                                        <Link
+                                            href={route(
+                                                `${ROUTES.RETURNED_PRODUCTS}.show`,
+                                                returnedProduct.id,
+                                            )}
+                                            className={buttonVariants({ variant: 'outline' })}
+                                        >
+                                            {t('action.show')}
+                                        </Link>
+                                    ) : checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                        <>
                                         <Link
                                             href={route(
                                                 `${ROUTES.RETURNED_PRODUCTS}.edit`,
@@ -82,9 +94,6 @@ export default function ReturnedProductTableView({
                                         >
                                             {t('action.edit')}
                                         </Link>
-                                    )}
-                                    {returnedProduct.status ===
-                                        ReturnedProductStatusEnum.REQUESTED && (
                                         <Button
                                             variant='outline'
                                             onClick={() =>
@@ -93,6 +102,7 @@ export default function ReturnedProductTableView({
                                         >
                                             {t('action.delete')}
                                         </Button>
+                                        </>
                                     )}
                                 </TableCell>
                             )}
