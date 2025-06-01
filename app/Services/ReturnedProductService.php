@@ -140,7 +140,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
-            'applied_status' => $data['status'],
+            'applied_status' => $returnedProduct->status,
         ]);
 
         return $returnedProduct;
