@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Resources\ReturnedProductResource;
+use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Imports\ReturnedProduct\Sheets\ReturnedProductProblemSheetImport;
 use App\Jobs\ReturnedProduct\ReturnedProductImportJob;
 use App\Models\Component;
 use App\Models\Panel;
@@ -19,6 +21,7 @@ use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
     use HandlesImages;
@@ -112,17 +115,27 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
     }
 
     public function importData(UploadedFile $file): bool {
-        $userId = auth()->id();
-        $filePath = $this->handleImportFile($file);
-        ReturnedProductImportJob::dispatch($filePath, $userId);
+        try {
+            Excel::import(new ReturnedProductImport(auth()->id()), $file);
+        } catch (\Exception $e) {
+            Excel::import(new ReturnedProductProblemSheetImport(auth()->id()), $file);
+        }
+        // $userId = auth()->id();
+        // $filePath = $this->handleImportFile($file);
+        // ReturnedProductImportJob::dispatch($filePath, $userId);
 
         return true;
     }
 
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool {
-        $userId = auth()->id();
-        $filePath = $this->handleImportFile($file);
-        ReturnedProductImportJob::dispatch($filePath, $userId, $returnedProduct);
+        try {
+            Excel::import(new ReturnedProductImport(auth()->id(), $returnedProduct), $file);
+        } catch (\Exception $e) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
+        // $userId = auth()->id();
+        // $filePath = $this->handleImportFile($file);
+        // ReturnedProductImportJob::dispatch($filePath, $userId, $returnedProduct);
 
         return true;
     }

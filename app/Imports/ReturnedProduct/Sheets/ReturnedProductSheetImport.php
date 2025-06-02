@@ -15,6 +15,9 @@ class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
     public function __construct(protected string $userId) {}
 
     public function model(array $row) {
+        if (empty($row['product_type']) && empty($row['product_name']) && empty($row['customer_optional']) && empty($row['serial_number']) && empty($row['note'])) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
         $product = $row['product_type'] == 'Panel' ? Panel::firstOrCreate([
             'name' => $row['product_name'],
         ]) : Component::firstOrCreate([

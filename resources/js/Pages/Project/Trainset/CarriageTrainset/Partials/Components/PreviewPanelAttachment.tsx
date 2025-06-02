@@ -135,132 +135,136 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
 
     return (
         <div key={trainset.id} className='text-black dark:text-white'>
-            <h1 className='text-xl font-bold'>
-                {t(
-                    'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.title',
-                )}
-            </h1>
-            {panelAttachmentAncestor && (
-                <div className='my-4 flex flex-col gap-4 md:flex-row'>
-                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
-                        <Link
-                            target='_blank'
-                            href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                            className={buttonVariants()}
-                        >
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
+            <div className='flex justify-between'>
+                <div className=''>
+                    <h1 className='text-xl font-bold'>
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.title',
+                        )}
+                    </h1>
+                    {panelAttachmentAncestor && (
+                        <div className='my-4 flex flex-col gap-4 md:flex-row'>
+                            {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
+                                <Link
+                                    target='_blank'
+                                    href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                                    className={buttonVariants()}
+                                >
+                                    {t(
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
+                                    )}
+                                </Link>
                             )}
-                        </Link>
-                    )}
-                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
-                        <ImportPanelCustomMaterial
-                            panelAttachment={
-                                panelAttachment ? panelAttachment : panelAttachmentAncestor
-                            }
-                        />
+                            {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
+                                <ImportPanelCustomMaterial
+                                    panelAttachment={
+                                        panelAttachment ? panelAttachment : panelAttachmentAncestor
+                                    }
+                                />
+                            )}
+                        </div>
                     )}
                 </div>
-            )}
-            <div className='mt-4 flex flex-col items-center gap-4 md:flex md:items-start'>
-                {trainset?.carriage_trainsets?.length > 0 && (
-                    <div className='flex flex-col gap-2'>
-                        <InputLabel htmlFor='selected-carriage-id'>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage',
-                            )}
-                        </InputLabel>
-                        <Select
-                            value={selectedCarriage?.toString()}
-                            onValueChange={(value) => setSelectedCarriage(+value)}
-                        >
-                            <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
-                                <SelectValue
-                                    placeholder={t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage_placeholder',
-                                    )}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {trainset.carriage_trainsets.map((carriageTrainset) => (
-                                    <SelectItem
-                                        value={carriageTrainset.carriage.id?.toString()}
-                                        key={carriageTrainset.id}
-                                    >
-                                        {carriageTrainset.carriage.type}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                )}
-
-                {selectedCarriage && (
-                    <div className='flex flex-col gap-2'>
-                        <InputLabel htmlFor='selected-panel-id'>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel',
-                            )}
-                        </InputLabel>
-                        <Select
-                            value={selectedPanel?.toString()}
-                            onValueChange={(value) => setSelectedPanel(+value)}
-                        >
-                            <SelectTrigger id='selected-panel-id' className='w-[180px]'>
-                                <SelectValue
-                                    placeholder={t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel_placeholder',
-                                    )}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {trainset.carriage_trainsets
-                                    .find(
-                                        (carriageTrainset) =>
-                                            carriageTrainset.carriage.id === selectedCarriage,
-                                    )
-                                    ?.carriage_panels?.map((carriagePanel) => (
+                <div className='mt-4 flex items-center gap-4 md:flex md:items-start'>
+                    {trainset?.carriage_trainsets?.length > 0 && (
+                        <div className='flex flex-col gap-2'>
+                            <InputLabel htmlFor='selected-carriage-id'>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage',
+                                )}
+                            </InputLabel>
+                            <Select
+                                value={selectedCarriage?.toString()}
+                                onValueChange={(value) => setSelectedCarriage(+value)}
+                            >
+                                <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
+                                    <SelectValue
+                                        placeholder={t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage_placeholder',
+                                        )}
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {trainset.carriage_trainsets.map((carriageTrainset) => (
                                         <SelectItem
-                                            value={carriagePanel.panel.id?.toString()}
-                                            key={carriagePanel.id}
+                                            value={carriageTrainset.carriage.id?.toString()}
+                                            key={carriageTrainset.id}
                                         >
-                                            {carriagePanel.panel.name}
+                                            {carriageTrainset.carriage.type}
                                         </SelectItem>
                                     ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                )}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
 
-                {panelAttachmentAncestor?.is_parent && (
-                    <div className='flex flex-col gap-2'>
-                        <InputLabel htmlFor='selected-panel-id'>{'reference min🗿'}</InputLabel>
-                        <Select
-                            value={selectedAttachment?.toString()}
-                            onValueChange={(value) => setSelectedAttachment(+value)}
-                        >
-                            <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem
-                                    value={panelAttachmentAncestor.id.toString()}
-                                    key={panelAttachmentAncestor.id}
-                                >
-                                    {panelAttachmentAncestor.attachment_number}
-                                </SelectItem>
-                                {panelAttachmentAncestor.childs?.map((childAttachment) => (
+                    {selectedCarriage && (
+                        <div className='flex flex-col gap-2'>
+                            <InputLabel htmlFor='selected-panel-id'>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel',
+                                )}
+                            </InputLabel>
+                            <Select
+                                value={selectedPanel?.toString()}
+                                onValueChange={(value) => setSelectedPanel(+value)}
+                            >
+                                <SelectTrigger id='selected-panel-id' className='w-[180px]'>
+                                    <SelectValue
+                                        placeholder={t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel_placeholder',
+                                        )}
+                                    />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {trainset.carriage_trainsets
+                                        .find(
+                                            (carriageTrainset) =>
+                                                carriageTrainset.carriage.id === selectedCarriage,
+                                        )
+                                        ?.carriage_panels?.map((carriagePanel) => (
+                                            <SelectItem
+                                                value={carriagePanel.panel.id?.toString()}
+                                                key={carriagePanel.id}
+                                            >
+                                                {carriagePanel.panel.name}
+                                            </SelectItem>
+                                        ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+
+                    {panelAttachmentAncestor?.is_parent && (
+                        <div className='flex flex-col gap-2'>
+                            <InputLabel htmlFor='selected-panel-id'>{'reference min🗿'}</InputLabel>
+                            <Select
+                                value={selectedAttachment?.toString()}
+                                onValueChange={(value) => setSelectedAttachment(+value)}
+                            >
+                                <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
                                     <SelectItem
-                                        value={childAttachment.id?.toString()}
-                                        key={childAttachment.id}
+                                        value={panelAttachmentAncestor.id.toString()}
+                                        key={panelAttachmentAncestor.id}
                                     >
-                                        {childAttachment.attachment_number}
+                                        {panelAttachmentAncestor.attachment_number}
                                     </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                )}
+                                    {panelAttachmentAncestor.childs?.map((childAttachment) => (
+                                        <SelectItem
+                                            value={childAttachment.id?.toString()}
+                                            key={childAttachment.id}
+                                        >
+                                            {childAttachment.attachment_number}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {panelAttachment ? (

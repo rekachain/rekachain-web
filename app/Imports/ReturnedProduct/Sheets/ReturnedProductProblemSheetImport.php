@@ -24,6 +24,19 @@ class ReturnedProductProblemSheetImport implements ToCollection {
         try {
             $emptyCount = 0;
             $rows->skip(1)->take($rows->count() - 1)->each(function ($row) use ($headers, &$carNumbers, &$emptyCount) {
+                if (empty($headers->search('Timestamp')) &&
+                    empty($headers->search('Train Set')) &&
+                    empty($headers->search('Pergantian Komponen')) &&
+                    empty($headers->search('Perbaikan Koneksi')) &&
+                    empty($headers->search('Setting')) &&
+                    empty($headers->search('Status')) &&
+                    empty($headers->search('Temuan')) &&
+                    empty($headers->search('Jumlah')) &&
+                    empty($headers->search('Gangguan Karena')) &&
+                    empty($headers->search('Nomor Kereta'))) {
+                    DB::rollBack();
+                    throw new \Exception('Format Excel tidak valid', 400);
+                }
                 if (!empty($row[$headers->search('Timestamp')])) {
                     $emptyCount = 0;
                 } else {
@@ -157,7 +170,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
+            throw new \Exception('Format Excel tidak valid');
         }
 
         return $carNumbers;
