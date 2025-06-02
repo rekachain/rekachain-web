@@ -9,6 +9,7 @@ use App\Models\Panel;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ProductRestockStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
@@ -17,6 +18,7 @@ use App\Traits\Services\HandlesImages;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
     use HandlesImages;
@@ -138,7 +140,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
-            'applied_status' => $data['status'],
+            'applied_status' => $returnedProduct->status,
         ]);
 
         return $returnedProduct;
@@ -156,47 +158,68 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
     }
 
     public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
-        $replacementStocks = $this->replacementStockService()->find([
-            'component_id', 'in', $data['component_ids'],
-        ]);
-        $diff = array_diff($data['component_ids'], $replacementStocks->pluck('component_id')->toArray());
-        if (count($diff) > 0) {
-            foreach ($diff as $componentId) {
-                $this->replacementStockService()->create([
-                    'component_id' => $componentId,
-                    'qty' => 0,
-                ]);
-            }
-        }
-        $replacementStocks = $this->replacementStockService()->find([
-            'component_id', 'in', $data['component_ids'],
-        ]);
-        $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($returnedProduct, $replacementStocks, $isIncrement) {
-            $this->replacementStockService()->update($stock, [
-                'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
+        DB::beginTransaction();
+        try {
+            $replacementStocks = $this->replacementStockService()->find([
+                'component_id',
+                'in',
+                $data['component_ids'],
             ]);
-            if ($stock->qty <= $stock->threshold) {
-                $this->productRestockService()->create([
-                    'returned_product_id' => $returnedProduct->id,
-                    'product_restockable_id' => $returnedProduct->product_returnable_id,
-                    'product_restockable_type' => $returnedProduct->product_returnable_type,
-                    'status' => ProductRestockStatusEnum::REQUESTED->value,
-                ]);
+            $diff = array_diff($data['component_ids'], $replacementStocks->pluck('component_id')->toArray());
+            if (count($diff) > 0) {
+                foreach ($diff as $componentId) {
+                    $this->replacementStockService()->create([
+                        'component_id' => $componentId,
+                        'qty' => 0,
+                    ]);
+                }
             }
-        });
-        if ($isIncrement) {
-            if (isset($data['req_production']) && $data['req_production']) {
-                $this->productRestockService()->create([
-                    'returned_product_id' => $returnedProduct->id,
-                    'product_restockable_id' => $returnedProduct->product_returnable_id,
-                    'product_restockable_type' => $returnedProduct->product_returnable_type,
-                    'status' => ProductRestockStatusEnum::REQUESTED->value,
+            $replacementStocks = $this->replacementStockService()->find([
+                'component_id',
+                'in',
+                $data['component_ids'],
+            ]);
+            $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($returnedProduct, $replacementStocks, $isIncrement) {
+                $this->replacementStockService()->update($stock, [
+                    'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
                 ]);
+                if ($stock->qty <= $stock->threshold) {
+                    $this->productRestockService()->create([
+                        'returned_product_id' => $returnedProduct->id,
+                        'product_restockable_id' => $returnedProduct->product_returnable_id,
+                        'product_restockable_type' => $returnedProduct->product_returnable_type,
+                        'status' => ProductRestockStatusEnum::REQUESTED->value,
+                    ]);
+                }
+            });
+            if ($isIncrement) {
+                if (isset($data['req_production']) && $data['req_production']) {
+                    $this->productRestockService()->create([
+                        'returned_product_id' => $returnedProduct->id,
+                        'product_restockable_id' => $returnedProduct->product_returnable_id,
+                        'product_restockable_type' => $returnedProduct->product_returnable_type,
+                        'status' => ProductRestockStatusEnum::REQUESTED->value,
+                    ]);
+                }
+                $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
+                $returnedProduct->save();
+            } else {
+                foreach ($data['component_ids'] as $value) {
+                    $productProblem = $this->productProblemService()->find([
+                        'component_id' => $value,
+                        'returned_product_id' => $returnedProduct->id,
+                    ])->first();
+                    $this->productProblemService()->update($productProblem, [
+                        'status' => ProductProblemStatusEnum::CHANGED->value,
+                    ]);
+                }
             }
-            $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
-            $returnedProduct->save();
-        }
+            DB::commit();
 
-        return true;
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

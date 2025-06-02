@@ -52,7 +52,7 @@ const AddStock = ({
             <DialogTrigger
                 className={buttonVariants({
                     className: 'w-fit',
-                    variant: replacementStock ? 'link' : 'default',
+                    variant: replacementStock ? 'outline' : 'default',
                 })}
             >
                 {tChoice(
