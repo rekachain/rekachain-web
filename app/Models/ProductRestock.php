@@ -50,7 +50,7 @@ class ProductRestock extends Model {
     }
 
     public function projectDetailUrl(): ?string {
-        if (!$this->project_id) {
+        if (!$this->project_id || $this->project->trainsets()->count() === 0) {
             return null;
         }
 

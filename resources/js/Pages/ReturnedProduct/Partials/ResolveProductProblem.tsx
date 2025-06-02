@@ -11,12 +11,14 @@ import {
 import { Separator } from '@/Components/UI/separator';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { replacementStockService } from '@/Services/replacementStockService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
     ProductProblemResource,
+    ReplacementStockResource,
     ReturnedProductResource,
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
@@ -42,6 +44,8 @@ const ResolveProductProblem = ({
     const [productProblemsResources, setProductProblemsResources] = useState<
         ProductProblemResource[]
     >(returnedProduct.product_problems || []);
+    const [replacementStockResource, setReplacementStockResource] =
+        useState<PaginateResponse<ReplacementStockResource>>();
 
     const { data, setData } = useForm({
         component_ids: [] as number[], // Explicitly define the type as number[]
@@ -59,7 +63,6 @@ const ResolveProductProblem = ({
 
     const fetchComponentResources = withLoading(async () => {
         try {
-            console.log(productProblemsResources);
             const resources = await returnedProductService.getComponents(
                 returnedProduct.id,
                 isScrapping,
@@ -70,8 +73,21 @@ const ResolveProductProblem = ({
         }
     });
 
+    const fetchReplacementStockData = withLoading(async () => {
+        const filters = {
+            column_filters: {
+                component_id: productProblemsResources.map(
+                    (productProblem) => productProblem.component_id,
+                ),
+            },
+        };
+        const res = await replacementStockService.getAll(filters);
+        setReplacementStockResource(res);
+    });
+
     useEffect(() => {
         void fetchComponentResources();
+        void fetchReplacementStockData();
     }, []);
 
     const submit = async (e: FormEvent) => {
@@ -101,7 +117,9 @@ const ResolveProductProblem = ({
                 (problem) => problem.component_id === componentResource.id,
             );
         }
-        return false;
+        return !replacementStockResource?.data.some(
+            (stock) => stock.component_id === componentResource.id && stock.qty >= 1,
+        );
     };
 
     return (
@@ -168,31 +186,35 @@ const ResolveProductProblem = ({
                                 </div>
                             ))}
                     </div>
-                    <Separator></Separator>
-                    <div className='flex flex-col gap-1'>
-                        <div className='flex items-center'>
-                            <label htmlFor='req_production' className='mr-2'>
-                                {t(
-                                    'pages.returned_product.partials.resolve_product_problem.dialog.req_production',
-                                )}
-                            </label>
-                            <Checkbox
-                                value={data.req_production.toString()}
-                                onCheckedChange={(checked: boolean) =>
-                                    setData('req_production', checked)
-                                }
-                                name='req_production'
-                                id='req_production'
-                            />
-                        </div>
-                        <span className='ml-1 text-sm text-muted-foreground'>
-                            (
-                            {t(
-                                'pages.returned_product.partials.resolve_product_problem.dialog.req_production_description',
-                            )}
-                            )
-                        </span>
-                    </div>
+                    {isScrapping && (
+                        <>
+                            <Separator></Separator>
+                            <div className='flex flex-col gap-1'>
+                                <div className='flex items-center'>
+                                    <label htmlFor='req_production' className='mr-2'>
+                                        {t(
+                                            'pages.returned_product.partials.resolve_product_problem.dialog.req_production',
+                                        )}
+                                    </label>
+                                    <Checkbox
+                                        value={data.req_production.toString()}
+                                        onCheckedChange={(checked: boolean) =>
+                                            setData('req_production', checked)
+                                        }
+                                        name='req_production'
+                                        id='req_production'
+                                    />
+                                </div>
+                                <span className='ml-1 text-sm text-muted-foreground'>
+                                    (
+                                    {t(
+                                        'pages.returned_product.partials.resolve_product_problem.dialog.req_production_description',
+                                    )}
+                                    )
+                                </span>
+                            </div>
+                        </>
+                    )}
                     <Button type='submit' form='add-note-form' disabled={loading}>
                         {loading
                             ? t('action.loading')
