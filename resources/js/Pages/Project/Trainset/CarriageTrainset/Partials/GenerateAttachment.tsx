@@ -40,9 +40,11 @@ const GenerateAttachment = ({
     const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
     const [activeTab, setActiveTab] = useState<GenerateAttachmentTabEnum>(
-        !trainset.has_mechanic_trainset_attachment ? GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC :
-        !trainset.has_electric_trainset_attachment ? GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC :
-        GenerateAttachmentTabEnum.PANEL_ATTACHMENT,
+        !trainset.has_mechanic_trainset_attachment
+            ? GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC
+            : !trainset.has_electric_trainset_attachment
+              ? GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC
+              : GenerateAttachmentTabEnum.PANEL_ATTACHMENT,
     );
     const [previewGenerateAttachmentRawMaterials, setPreviewGenerateAttachmentRawMaterials] =
         useState<PreviewGenerateAttachmentRawMaterialResource[]>([]);
@@ -204,9 +206,7 @@ const GenerateAttachment = ({
                             <TabsList>
                                 <TabsTrigger
                                     value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                                    disabled={
-                                        trainset.has_mechanic_trainset_attachment
-                                    }
+                                    disabled={trainset.has_mechanic_trainset_attachment}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_mechanic',
@@ -214,9 +214,7 @@ const GenerateAttachment = ({
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
-                                    disabled={
-                                        trainset.has_electric_trainset_attachment
-                                    }
+                                    disabled={trainset.has_electric_trainset_attachment}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_electric',

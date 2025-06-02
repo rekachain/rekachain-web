@@ -21,11 +21,18 @@ const Error: React.FC<Props> = ({ status, message }) => {
     return (
         <Layout>
             <Head title='Error' />
-            <div className={`justify-center flex flex-col items-center gap-4 text-xl ${props.auth ? 'h-screen' : ''}`} >
+            <div
+                className={`flex flex-col items-center justify-center gap-4 text-xl ${props.auth ? 'h-screen' : ''}`}
+            >
                 <OctagonAlert className='size-20 text-destructive' />
-                <h1 className='text-3xl font-bold text-center'>{status || 'Oops, something went wrong!'}</h1>
-                <p className='text-lg text-center'>{(status < 500) && message || "We're sorry, but an unexpected error has occurred. Please try again later or contact support if the issue persists."}</p>
-                <div className='flex items-center justify-center mt-4'>
+                <h1 className='text-center text-3xl font-bold'>
+                    {status || 'Oops, something went wrong!'}
+                </h1>
+                <p className='text-center text-lg'>
+                    {(status < 500 && message) ||
+                        "We're sorry, but an unexpected error has occurred. Please try again later or contact support if the issue persists."}
+                </p>
+                <div className='mt-4 flex items-center justify-center'>
                     <Link href='/' className={buttonVariants({ variant: 'outline' })}>
                         Back to Home
                     </Link>

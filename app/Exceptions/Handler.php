@@ -32,14 +32,15 @@ class Handler extends ExceptionHandler {
             || (!app()->isProduction() && config('app.debug'))) {
             return parent::render($request, $e);
         }
-        
+
         $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
-        
+
         if (!$request->inertia() && $request->expectsJson()) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], $statusCode);
         }
+
         return Inertia::render('Error', [
             'status' => $statusCode,
             'message' => $e->getMessage(),

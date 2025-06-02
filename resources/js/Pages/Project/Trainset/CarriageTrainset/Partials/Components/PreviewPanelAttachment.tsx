@@ -135,8 +135,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
 
     return (
         <div key={trainset.id} className='text-black dark:text-white'>
-            <div className="flex justify-between">
-                <div className="">
+            <div className='flex justify-between'>
+                <div className=''>
                     <h1 className='text-xl font-bold'>
                         {t(
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.title',
