@@ -65,7 +65,7 @@ export default function Sidebar() {
         <SidebarProvider>
             <aside
                 ref={sidebarRef}
-                className='sidebar h-screen w-72 border-r-2 border-border transition-all'
+                className='sidebar h-auto w-72 border-r-2 border-border transition-all'
             >
                 <nav className='flex flex-col space-y-1'>
                     <div className='sidebar-header flex h-16 justify-between border-b-2 px-4 py-3'>
@@ -296,10 +296,20 @@ export default function Sidebar() {
                     <SidebarMenu
                         title={'AFTERSALES'}
                         bordered={checkPermission([
-                            PERMISSION_ENUM.RETURNED_PRODUCT_READ,
-                            PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ,
-                            PERMISSION_ENUM.REPLACEMENT_STOCK_READ,
-                            PERMISSION_ENUM.PRODUCT_RESTOCK_READ,
+                            PERMISSION_ENUM.DASHBOARD_READ,
+                            PERMISSION_ENUM.WORK_DAY_READ,
+                            PERMISSION_ENUM.DIVISION_READ,
+                            PERMISSION_ENUM.WORKSHOP_READ,
+                            PERMISSION_ENUM.WORKSTATION_READ,
+                            PERMISSION_ENUM.USER_READ,
+                            PERMISSION_ENUM.PERMISSION_READ,
+                            PERMISSION_ENUM.ROLE_READ,
+                            PERMISSION_ENUM.STEP_READ,
+                            PERMISSION_ENUM.RAW_MATERIAL_READ,
+                            PERMISSION_ENUM.COMPONENT_READ,
+                            PERMISSION_ENUM.PANEL_READ,
+                            PERMISSION_ENUM.PROJECT_READ,
+                            PERMISSION_ENUM.CARRIAGE_READ,
                         ])}
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
