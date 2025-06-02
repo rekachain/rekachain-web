@@ -59,7 +59,7 @@ export default function ReplacementStockTableView({
                             <TableCell>{stock.component?.description || '-'}</TableCell>
                             <TableCell>{stock.qty}</TableCell>
                             <TableCell>{stock.threshold}</TableCell>
-                            <TableCell className='flex gap-2 flex-wrap'>
+                            <TableCell className='flex flex-wrap gap-2'>
                                 {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
                                     <AddStock
                                         replacementStock={stock}

@@ -44,9 +44,8 @@ const ResolveProductProblem = ({
     const [productProblemsResources, setProductProblemsResources] = useState<
         ProductProblemResource[]
     >(returnedProduct.product_problems || []);
-    const [replacementStockResource, setReplacementStockResource] = useState<
-        PaginateResponse<ReplacementStockResource>
-    >();
+    const [replacementStockResource, setReplacementStockResource] =
+        useState<PaginateResponse<ReplacementStockResource>>();
 
     const { data, setData } = useForm({
         component_ids: [] as number[], // Explicitly define the type as number[]
@@ -77,9 +76,11 @@ const ResolveProductProblem = ({
     const fetchReplacementStockData = withLoading(async () => {
         const filters = {
             column_filters: {
-                component_id: productProblemsResources.map((productProblem) => productProblem.component_id),
-            }
-        }
+                component_id: productProblemsResources.map(
+                    (productProblem) => productProblem.component_id,
+                ),
+            },
+        };
         const res = await replacementStockService.getAll(filters);
         setReplacementStockResource(res);
     });

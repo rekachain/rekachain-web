@@ -157,8 +157,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return $returnedProduct;
     }
 
-    public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool
-    {
+    public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
         DB::beginTransaction();
         try {
             $replacementStocks = $this->replacementStockService()->find([
@@ -216,6 +215,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
                 }
             }
             DB::commit();
+
             return true;
         } catch (\Exception $e) {
             DB::rollBack();

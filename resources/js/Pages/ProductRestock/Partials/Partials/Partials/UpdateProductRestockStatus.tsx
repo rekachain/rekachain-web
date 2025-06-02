@@ -59,12 +59,12 @@ export default function ({
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger 
-                className={buttonVariants({
-                    className: `w-fit ${disabled ? 'opacity-50' : ''}`, 
-                    variant: 'outline'
-                })} 
+            <DialogTrigger
                 disabled={disabled}
+                className={buttonVariants({
+                    className: `w-fit ${disabled ? 'opacity-50' : ''}`,
+                    variant: 'outline',
+                })}
             >
                 {t(
                     'pages.product_restock.partials.partials.partials.update_product_restock_status.buttons.update_status',

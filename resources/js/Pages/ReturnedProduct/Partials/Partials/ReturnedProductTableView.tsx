@@ -84,7 +84,7 @@ export default function ReturnedProductTableView({
                             </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
 
-                            <TableCell className='flex gap-2 flex-wrap'>
+                            <TableCell className='flex flex-wrap gap-2'>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                                     <Link
                                         href={route(

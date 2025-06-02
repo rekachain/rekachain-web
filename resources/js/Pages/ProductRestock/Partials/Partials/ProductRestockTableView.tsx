@@ -114,7 +114,7 @@ export default function ProductRestockTableView({
                             </TableCell>
                             <TableCell>{productRestock.localized_status}</TableCell>
 
-                            <TableCell className='flex gap-2 flex-wrap'>
+                            <TableCell className='flex flex-wrap gap-2'>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) &&
                                     productRestock.project_url && (
                                         <Button
@@ -127,14 +127,18 @@ export default function ProductRestockTableView({
                                             {t('action.show')}
                                         </Button>
                                     )}
-                                {[ProductRestockStatusEnum.REQUESTED, ProductRestockStatusEnum.PROGRESS].includes(productRestock.status) && checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
-                                    <UpdateProductRestockStatus
-                                        productRestock={productRestock}
-                                        localizedStatuses={localizedStatuses}
-                                        handleSyncProductRestock={handleSyncProductRestock}
-                                        disabled={isSelecting}
-                                    />
-                                )}
+                                {[
+                                    ProductRestockStatusEnum.REQUESTED,
+                                    ProductRestockStatusEnum.PROGRESS,
+                                ].includes(productRestock.status) &&
+                                    checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                        <UpdateProductRestockStatus
+                                            productRestock={productRestock}
+                                            localizedStatuses={localizedStatuses}
+                                            handleSyncProductRestock={handleSyncProductRestock}
+                                            disabled={isSelecting}
+                                        />
+                                    )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) &&
                                     productRestock.status ===
                                         ProductRestockStatusEnum.REQUESTED && (

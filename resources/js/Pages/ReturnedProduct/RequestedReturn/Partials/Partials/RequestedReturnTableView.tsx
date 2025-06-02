@@ -71,9 +71,9 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.updated_at}</TableCell>
                             {(returnedProduct.status === ReturnedProductStatusEnum.REQUESTED ||
                                 checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE)) && (
-                                <TableCell className='flex gap-2 flex-wrap'>
+                                <TableCell className='flex flex-wrap gap-2'>
                                     {returnedProduct.status !==
-                                        ReturnedProductStatusEnum.REQUESTED ? (
+                                    ReturnedProductStatusEnum.REQUESTED ? (
                                         <Link
                                             href={route(
                                                 `${ROUTES.RETURNED_PRODUCTS}.show`,
@@ -83,26 +83,34 @@ export default function ReturnedProductTableView({
                                         >
                                             {t('action.show')}
                                         </Link>
-                                    ) : checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
-                                        <>
-                                        <Link
-                                            href={route(
-                                                `${ROUTES.RETURNED_PRODUCTS}.edit`,
-                                                returnedProduct.id,
-                                            )}
-                                            className={buttonVariants({ variant: 'outline' })}
-                                        >
-                                            {t('action.edit')}
-                                        </Link>
-                                        <Button
-                                            variant='outline'
-                                            onClick={() =>
-                                                handleRequestedReturnDeletion(returnedProduct.id)
-                                            }
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                        </>
+                                    ) : (
+                                        checkPermission(
+                                            PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE,
+                                        ) && (
+                                            <>
+                                                <Link
+                                                    href={route(
+                                                        `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                                        returnedProduct.id,
+                                                    )}
+                                                    className={buttonVariants({
+                                                        variant: 'outline',
+                                                    })}
+                                                >
+                                                    {t('action.edit')}
+                                                </Link>
+                                                <Button
+                                                    variant='outline'
+                                                    onClick={() =>
+                                                        handleRequestedReturnDeletion(
+                                                            returnedProduct.id,
+                                                        )
+                                                    }
+                                                >
+                                                    {t('action.delete')}
+                                                </Button>
+                                            </>
+                                        )
                                     )}
                                 </TableCell>
                             )}

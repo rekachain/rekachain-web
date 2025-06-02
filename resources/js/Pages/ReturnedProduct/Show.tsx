@@ -27,6 +27,7 @@ import { returnedProductNoteService } from '@/Services/returnedProductNoteServic
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
@@ -45,7 +46,6 @@ import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import ResolveProductProblem from './Partials/ResolveProductProblem';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
-import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t, setLocale } = useLaravelReactI18n();
