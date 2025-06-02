@@ -417,6 +417,9 @@ class DashboardService {
         $vendorProblem = $transformed->groupBy('vendor_name')->map(function ($item) {
             $totalSent = $item->sum('vendor_qty');
             $totalProblem = $item->sum('total_problem');
+            if ($totalSent == 0 && empty($item->first()->vendor_name)) {
+                return null;
+            }
 
             return (object) [
                 'intent' => IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value,
@@ -470,7 +473,7 @@ class DashboardService {
                 'date_range' => $dateRange,
                 'total_sent' => $item->vendor_qty,
                 'total_problem' => $totalProblem,
-                'problem_percent' => $totalProblem * 100 / $item->vendor_qty,
+                'problem_percent' => (empty($item->vendor_qty) || $item->vendor_qty == 0) ? 0 : $totalProblem * 100 / $item->vendor_qty,
             ];
         });
         ProductProblemAnalysis::dispatch($transformed->toArray());
