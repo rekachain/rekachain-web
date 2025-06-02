@@ -201,7 +201,11 @@ export default function ({
                                                 handleSyncTrainset={handleSyncTrainset}
                                             />
                                         )}
-                                    {checkPermission(
+                                    {!(
+                                        trainset.has_mechanic_trainset_attachment &&
+                                        trainset.has_electric_trainset_attachment &&
+                                        trainset.has_panel_attachment
+                                    ) && checkPermission(
                                         PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_GENERATE,
                                     ) && (
                                         <GenerateAttachment
@@ -226,7 +230,7 @@ export default function ({
                                         trainset.has_panel_attachment) && (
                                         <ProgressAttachments trainset={trainset} />
                                     )}
-                                    {checkPermission(
+                                    {trainset.has_panel_attachment && checkPermission(
                                         PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_SERIAL_EXPORT,
                                     ) && (
                                         <Button onClick={handleExportSerialNumbers}>
