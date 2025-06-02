@@ -2629,6 +2629,7 @@ return [
                         'component_name' => 'Nama Komponen',
                         'component_description' => 'Deskripsi Komponen',
                         'status' => 'Status',
+                        'cause' => 'Penyebab',
                     ],
                 ],
                 'messages' => [

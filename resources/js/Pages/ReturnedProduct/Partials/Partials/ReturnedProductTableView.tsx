@@ -84,14 +84,14 @@ export default function ReturnedProductTableView({
                             </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
 
-                            <TableCell>
+                            <TableCell className='flex flex-wrap gap-2'>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                                     <Link
                                         href={route(
                                             `${ROUTES.RETURNED_PRODUCTS}.show`,
                                             returnedProduct.id,
                                         )}
-                                        className={buttonVariants({ variant: 'link' })}
+                                        className={buttonVariants({ variant: 'outline' })}
                                     >
                                         {t('action.show')}
                                     </Link>
@@ -106,7 +106,7 @@ export default function ReturnedProductTableView({
                                                 `${ROUTES.RETURNED_PRODUCTS}.edit`,
                                                 returnedProduct.id,
                                             )}
-                                            className={buttonVariants({ variant: 'link' })}
+                                            className={buttonVariants({ variant: 'outline' })}
                                         >
                                             {t('action.edit')}
                                         </Link>
@@ -116,7 +116,7 @@ export default function ReturnedProductTableView({
                                         returnedProduct.status,
                                     ) && (
                                         <Button
-                                            variant='link'
+                                            variant='outline'
                                             onClick={() =>
                                                 handleReturnedProductDeletion(returnedProduct.id)
                                             }

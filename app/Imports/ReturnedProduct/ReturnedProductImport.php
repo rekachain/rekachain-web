@@ -18,6 +18,10 @@ class ReturnedProductImport implements WithMultipleSheets {
             'Problem Produk' => new ProductProblemSheetImport($this->userId),
         ];
 
+        if (empty($sheets)) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
+
         return $sheets;
     }
 }
