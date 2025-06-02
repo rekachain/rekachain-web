@@ -96,16 +96,6 @@
             }
         },
         {
-            "label": "Laravel Queue - Shared",
-            "problemMatcher": [],
-            "type": "shell",
-            "command": "php",
-            "presentation": {
-                "group": "RUNAPPSHARED",
-            },
-            "args": ["artisan", "queue:listen", "--host=0.0.0.0" , "--memory=512", "--timeout=3600"]
-        },
-        {
             "label": "Laravel NPM Run Dev",
             "problemMatcher": [],
             "type": "shell",
@@ -163,7 +153,7 @@
             "label": "App-Shared",
             "problemMatcher": [],
             "type": "shell",
-            "dependsOn": ["Laravel Serve - Shared", "Laravel Queue - Shared", "Laravel NPM Run Dev - Shared"]
+            "dependsOn": ["Laravel Serve - Shared", "Laravel Queue", "Laravel NPM Run Dev - Shared"]
         },
         {
             "label": "NPM Run Build",
