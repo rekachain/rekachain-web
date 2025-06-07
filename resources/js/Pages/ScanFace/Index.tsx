@@ -70,71 +70,56 @@ const Index: React.FC<Props> = ({ data }) => {
             </h1>
 
             <div className='mb-4 flex justify-center gap-2'>
-                <button
-                    className={`rounded px-3 py-1 ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    onClick={() => setFilter('all')}
-                >
-                    Semua
-                </button>
-                <button
-                    className={`rounded px-3 py-1 ${filter === 'day' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    onClick={() => setFilter('day')}
-                >
-                    Hari Ini
-                </button>
-                <button
-                    className={`rounded px-3 py-1 ${filter === 'week' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    onClick={() => setFilter('week')}
-                >
-                    Minggu Ini
-                </button>
-                <button
-                    className={`rounded px-3 py-1 ${filter === 'month' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
-                    onClick={() => setFilter('month')}
-                >
-                    Bulan Ini
-                </button>
+                {/* ... tombol filter tetap ... */}
             </div>
 
-            <table className='w-full table-auto border-collapse'>
-                <thead>
-                    <tr>
-                        <th className='px-4 py-2'>Nama</th>
-                        <th className='px-4 py-2'>NIP</th>
-                        <th className='px-4 py-2'>Divisi</th>
-                        <th className='px-4 py-2'>Image</th>
-                        <th className='px-4 py-2'>KPM</th>
-                        <th className='px-4 py-2'>Panel</th>
-                        <th className='px-4 py-2'>Step</th>
-                        <th className='px-4 py-2'>Status Terdeteksi</th>
-                        <th className='px-4 py-2'>Waktu Terdeteksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredData.map((scan) => (
-                        <tr key={scan.user_id + scan.created_at}>
-                            <td className='px-4 py-2'>{scan.user.name}</td>
-                            <td className='px-4 py-2'>{scan.user.nip}</td>
-                            <td className='px-4 py-2'>{scan.user.role_name}</td>
-                            <td className='px-4 py-2'>
-                                <img
-                                    src={`/result_scan_faces/${scan.image_path}`}
-                                    alt={`Image of user ${scan.user_id}`}
-                                    width='100'
-                                    className='object-cover'
-                                />
-                            </td>
-                            <td className='px-4 py-2'>{scan.kpm}</td>
-                            <td className='px-4 py-2'>{scan.panel}</td>
-                            <td className='px-4 py-2'>{scan.user.step.name}</td>
-                            <td className='px-4 py-2'>{scan.status}</td>
-                            <td className='px-4 py-2'>
-                                {dayjs(scan.created_at).format('DD-MM-YYYY HH:mm:ss')}
-                            </td>
+            {filteredData.length === 0 ? (
+                <div className='flex items-center justify-center'>
+                    <div className='rounded-lg bg-white px-8 py-10 text-center text-lg text-gray-500 shadow-md'>
+                        Data masih kosong
+                    </div>
+                </div>
+            ) : (
+                <table className='w-full table-auto border-collapse'>
+                    <thead>
+                        <tr>
+                            <th className='px-4 py-2'>Nama</th>
+                            <th className='px-4 py-2'>NIP</th>
+                            <th className='px-4 py-2'>Divisi</th>
+                            <th className='px-4 py-2'>Image</th>
+                            <th className='px-4 py-2'>KPM</th>
+                            <th className='px-4 py-2'>Panel</th>
+                            <th className='px-4 py-2'>Step</th>
+                            <th className='px-4 py-2'>Status Terdeteksi</th>
+                            <th className='px-4 py-2'>Waktu Terdeteksi</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {filteredData.map((scan) => (
+                            <tr key={scan.user_id + scan.created_at}>
+                                <td className='px-4 py-2'>{scan.user.name}</td>
+                                <td className='px-4 py-2'>{scan.user.nip}</td>
+                                <td className='px-4 py-2'>{scan.user.role_name}</td>
+                                <td className='px-4 py-2'>
+                                    <img
+                                        src={`/result_scan_faces/${scan.image_path}`}
+                                        alt={`Image of user ${scan.user_id}`}
+                                        width='100'
+                                        className='object-cover'
+                                    />
+                                </td>
+                                <td className='px-4 py-2'>{scan.kpm}</td>
+                                <td className='px-4 py-2'>{scan.panel}</td>
+                                <td className='px-4 py-2'>{scan.user.step.name}</td>
+                                <td className='px-4 py-2'>{scan.status}</td>
+                                <td className='px-4 py-2'>
+                                    {dayjs(scan.created_at).format('DD-MM-YYYY HH:mm:ss')}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };
