@@ -31,6 +31,10 @@ const ProductProblemAnalysisDetailDialog = ({
                     <DialogDescription className='w-full'>
                         {t(
                             'pages.dashboard.partials.partials.product_problem_analysis_detail_dialog.subtitle',
+                            {
+                                component_name: data?.component_name || '',
+                                date_range: data?.date_range || '',
+                            },
                         )}
                     </DialogDescription>
                 </DialogHeader>

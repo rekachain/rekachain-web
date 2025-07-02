@@ -83,11 +83,11 @@ class DashboardController extends Controller {
             'data' => $data,
             'trainsetStatusProgress' => $attachment_status_of_trainset,
             'workstationStatusProgress' => $attachment_status_of_workstation,
-            'returnedProductStatus' => $returned_product_status,
-            'returnedProductTimeDiff' => $returned_product_progress_time_diff,
-            'returnedProductTimeMinMax' => $returned_product_progress_time_min_max,
-            'replacementStocks' => $replacement_stocks,
-            'vendorProblems' => $vendor_problems,
+            'returnedProductStatus' => $returned_product_status ?? [],
+            'returnedProductTimeDiff' => $returned_product_progress_time_diff ?? [],
+            'returnedProductTimeMinMax' => $returned_product_progress_time_min_max ?? [],
+            'replacementStocks' => $replacement_stocks ?? [],
+            'vendorProblems' => $vendor_problems ?? [],
         ]);
     }
 
