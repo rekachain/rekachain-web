@@ -1,4 +1,4 @@
-name: Deployment to Production Server
+name: Deployment to Development Server
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-js-production:
-    name: Build JavaScript/CSS for Production Server
+    name: Build JavaScript/CSS for Development Server
     runs-on: ubuntu-latest
     # if: github.ref == 'refs/heads/main'
     steps:
@@ -25,7 +25,7 @@ jobs:
           retention-days: 3
 
   deploy-production:
-    name: Deploy project to Production Server
+    name: Deploy project to Development Server
     runs-on: ubuntu-latest
     needs: [ build-js-production ]
     # if: github.ref == 'refs/heads/main'
@@ -43,13 +43,12 @@ jobs:
           extensions: mbstring, bcmath
       - name: Composer install
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress
-      - name: Deploy to Production Server
+      - name: Deploy to Development Server
         uses: deployphp/action@v1
         with:
-          dep: deploy
-          php-binary: 'php8.1' # not released yet
+          dep: deploy main
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Deploy to Production
+      - name: Deploy to Development
         env:
-          DOT_ENV: ${{ secrets.DOT_ENV_PRODUCTION }}
-        run: php8.1 vendor/bin/dep deploy prod --branch="main" -vv
+          DOT_ENV: ${{ secrets.DOT_ENV_DEVELOPMENT }}
+        run: php vendor/bin/dep deploy main --branch="main" -vv
