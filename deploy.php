@@ -41,6 +41,11 @@ task('deploy:secrets', function () {
 host('prod')
     ->set('remote_user', 'rekachain')
     ->setHostname('103.211.26.90')
+    ->set('deploy_path', '/var/www/rekachain.rekaindo.prod');
+    
+host('main')
+    ->set('remote_user', 'rekachain')
+    ->setHostname('103.211.26.90')
     ->set('deploy_path', '/var/www/rekachain.dhanifudin.com');
 
 // Hooks

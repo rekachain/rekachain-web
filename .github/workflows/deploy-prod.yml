@@ -3,8 +3,7 @@ name: Deployment to Production Server
 on:
   push:
     branches:
-      - main
-      - feature/deployment
+      - prod
 
 jobs:
   build-js-production:
@@ -46,9 +45,7 @@ jobs:
       - name: Deploy to Production Server
         uses: deployphp/action@v1
         with:
-          dep: deploy
+          dep: deploy prod
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Deploy to Production
         env:
           DOT_ENV: ${{ secrets.DOT_ENV_PRODUCTION }}
-        run: php vendor/bin/dep deploy prod --branch="main" -vv
