@@ -43,3 +43,7 @@ export * from './ProductProblemNote';
 export * from './ReplacementStock';
 export * from './ReturnedProduct';
 export * from './ReturnedProductNote';
+
+export * from './ProductRestock';
+
+export * from './ProductProblemAnalysis';

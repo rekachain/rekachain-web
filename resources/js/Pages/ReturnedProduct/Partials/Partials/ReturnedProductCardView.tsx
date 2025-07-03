@@ -3,6 +3,7 @@ import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ReturnedProductResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -108,27 +109,34 @@ export default function ReturnedProductCardView({
                                     {t('action.show')}
                                 </Link>
                             )}
-                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
-                                <Link
-                                    href={route(
-                                        `${ROUTES.RETURNED_PRODUCTS}.edit`,
-                                        returnedProduct.id,
-                                    )}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
-                                <button
-                                    onClick={() =>
-                                        handleReturnedProductDeletion(returnedProduct.id)
-                                    }
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.delete')}
-                                </button>
-                            )}
+                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) &&
+                                [
+                                    ReturnedProductStatusEnum.DRAFT,
+                                    ReturnedProductStatusEnum.PROGRESS,
+                                ].includes(returnedProduct.status) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                            returnedProduct.id,
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.edit')}
+                                    </Link>
+                                )}
+                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) &&
+                                [ReturnedProductStatusEnum.DRAFT].includes(
+                                    returnedProduct.status,
+                                ) && (
+                                    <button
+                                        onClick={() =>
+                                            handleReturnedProductDeletion(returnedProduct.id)
+                                        }
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.delete')}
+                                    </button>
+                                )}
                         </div>
                     </div>
                 </AnimateIn>

@@ -24,7 +24,7 @@ export default function ({
     });
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getComponents(project.id, filters);
+        const data = await projectService.getQtyComponents(project.id, filters);
 
         setComponentResponse(data);
 

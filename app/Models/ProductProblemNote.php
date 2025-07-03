@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\ProductProblemStatusEnum;
 use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,10 @@ class ProductProblemNote extends Model {
     protected $fillable = [
         'product_problem_id',
         'note',
+        'applied_status',
         'user_id',
+        'created_at',
+        'updated_at',
     ];
     protected $filterable = [
         'searchs' => [
@@ -28,6 +32,9 @@ class ProductProblemNote extends Model {
                 'name',
             ],
         ],
+    ];
+    protected $casts = [
+        'applied_status' => ProductProblemStatusEnum::class,
     ];
 
     public function product_problem(): BelongsTo {

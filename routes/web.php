@@ -19,8 +19,10 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PanelMaterialController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProductProblemAnalysisController;
 use App\Http\Controllers\ProductProblemController;
 use App\Http\Controllers\ProductProblemNoteController;
+use App\Http\Controllers\ProductRestockController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
@@ -62,7 +64,6 @@ Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::middleware('auth')->group(function () {
-    // Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -73,8 +74,11 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/test',TestController::class);
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/product-problems', [ProductProblemAnalysisController::class, 'index'])->name('dashboard.product-problems');
+    Route::get('product-problem-analyses', [ProductProblemAnalysisController::class, 'index'])->name('product-problem-analyses.index');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
     Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset'])->name('dashboard.trainset');
+    Route::post('dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
     // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class); // auth done
     Route::resource('workshops', WorkshopController::class); // auth done
@@ -113,6 +117,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-problems', ProductProblemController::class);
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
     Route::resource('replacement-stocks', ReplacementStockController::class);
+    Route::resource('product-restocks', ProductRestockController::class);
+    Route::resource('product-problem-analyses', ProductProblemAnalysisController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 

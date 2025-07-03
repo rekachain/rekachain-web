@@ -5,6 +5,7 @@ namespace App\Http\Requests\ReturnedProduct;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\ProductProblemCauseEnum;
 use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,9 +19,40 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'component_id' => 'nullable|integer|exists:components,id',
                     'new_component_name' => 'required_without:component_id|string',
                     'new_component_description' => 'required_without:component_id|string',
+                    'cause' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|in:' . implode(',', ProductProblemCauseEnum::toArray()),
                     'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                     'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
                     'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
+                ];
+            case IntentEnum::API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM->value:
+                return [
+                    'component_id' => 'required|integer|exists:components,id',
+                    'cause' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|in:' . implode(',', ProductProblemCauseEnum::toArray()),
+                    'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
+                    'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
+                    'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
+                ];
+            case IntentEnum::API_RETURNED_PRODUCT_UPDATE_RETURNED_PRODUCT_WITH_NOTE->value:
+                return [
+                    'product_returnable_type' => 'required_with:product_returnable_id|string|in:' . implode(',', [
+                        Panel::class,
+                        Component::class,
+                    ]),
+                    'product_returnable_id' => [
+                        'required_with:product_returnable_type',
+                        'integer',
+                        $this->product_returnable_type ? 'exists:' . (new $this->product_returnable_type)->getTable() . ',id' : '',
+                    ],
+                    'buyer_id' => 'nullable|integer|exists:users,id',
+                    'qty' => 'nullable|integer|min:1', // if serial panel then only one?
+                    'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
+                    'serial_number' => 'nullable|integer',
+                    'project_name' => 'nullable|string',
+                    'trainset_name' => 'nullable|string',
+                    'carriage_type' => 'nullable|string',
+                    'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+                    'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
+                    'note' => 'required|string',
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [
@@ -32,7 +64,8 @@ class UpdateReturnedProductRequest extends FormRequest {
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP->value:
                 return [
-                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                    'component_ids' => 'required|array|exists:components,id',
+                    'req_production' => 'nullable|boolean',
                 ];
         }
 
@@ -50,6 +83,9 @@ class UpdateReturnedProductRequest extends FormRequest {
             'qty' => 'nullable|integer|min:1',
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
+            'project_name' => 'nullable|string',
+            'trainset_name' => 'nullable|string',
+            'carriage_type' => 'nullable|string',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
         ];

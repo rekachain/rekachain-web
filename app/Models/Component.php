@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Component extends Model {
@@ -15,8 +15,10 @@ class Component extends Model {
 
     protected $fillable = [
         'name',
-        'progress_id',
         'description',
+        'progress_id',
+        'vendor_name',
+        'vendor_qty',
     ];
     protected $filterable = [
         'searchs' => [
@@ -30,14 +32,19 @@ class Component extends Model {
         'relations' => [
             'trainset_attachments',
         ],
+        'relation_columns' => [
+            'projects' => [
+                'id',
+            ],
+        ],
     ];
 
     public function carriage_panel_components(): HasMany {
         return $this->hasMany(CarriagePanelComponent::class);
     }
 
-    public function trainset_attachments(): HasOneDeep {
-        return $this->hasOneDeep(TrainsetAttachment::class, [
+    public function trainset_attachments(): HasManyDeep {
+        return $this->hasManyDeep(TrainsetAttachment::class, [
             CarriagePanelComponent::class,
             TrainsetAttachmentComponent::class,
         ], [
@@ -57,5 +64,34 @@ class Component extends Model {
 
     public function canBeDeleted(): bool {
         return $this->carriage_panel_components()->count() === 0;
+    }
+
+    public function product_problems(): HasMany {
+        return $this->hasMany(ProductProblem::class);
+    }
+
+    public function hasProductProblem(): bool {
+        return $this->product_problems()->count() > 0;
+    }
+
+    public function projects(): HasManyDeep {
+        return $this->hasManyDeep(Project::class, [
+            CarriagePanelComponent::class,
+            CarriagePanel::class,
+            CarriageTrainset::class,
+            Trainset::class,
+        ], [
+            'component_id',
+            'id',
+            'id',
+            'id',
+            'id',
+        ], [
+            'id',
+            'carriage_panel_id',
+            'carriage_trainset_id',
+            'trainset_id',
+            'project_id',
+        ]);
     }
 }

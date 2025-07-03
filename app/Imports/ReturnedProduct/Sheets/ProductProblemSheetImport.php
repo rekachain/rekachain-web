@@ -9,9 +9,12 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ProductProblemSheetImport implements ToModel, WithHeadingRow {
-    public function __construct(private ?ReturnedProduct $returnedProduct = null) {}
+    public function __construct(protected string $userId, private ?ReturnedProduct $returnedProduct = null) {}
 
     public function model(array $row) {
+        if (empty($row['serial_number']) && empty($row['problem_component_name']) && empty($row['status']) && empty($row['note'])) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
         $returnedProduct = $this->returnedProduct ?? ReturnedProduct::whereSerialNumber($row['serial_number'])->get()->last();
 
         $productProblem = $returnedProduct->product_problems()->create([
@@ -26,7 +29,7 @@ class ProductProblemSheetImport implements ToModel, WithHeadingRow {
         ]);
 
         $productProblem->product_problem_notes()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $this->userId,
             'note' => $row['note'],
         ]);
 

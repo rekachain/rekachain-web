@@ -27,6 +27,7 @@ import { returnedProductNoteService } from '@/Services/returnedProductNoteServic
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
@@ -66,18 +67,22 @@ export default function ({ data }: { data: ReturnedProductResource }) {
     const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<
         Record<string, string>
     >({});
+    const [localizedProductProblemCauses, setProductProblemLocalizedCauses] = useState<
+        Record<string, string>
+    >({});
+
+    const syncLocalizedEnums = withLoading(async () => {
+        await fetchEnumLabels(['ProductProblemStatusEnum', 'ProductProblemCauseEnum'])
+            .then((res) => {
+                setProductProblemLocalizedStatuses(res.ProductProblemStatusEnum);
+                setProductProblemLocalizedCauses(res.ProductProblemCauseEnum);
+            })
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    });
 
     useEffect(() => {
-        const fetchProductProblemLocalizedStatuses = async () => {
-            try {
-                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
-                setProductProblemLocalizedStatuses(labels);
-            } catch (error) {
-                console.error('Failed to fetch localized statuses:', error);
-            }
-        };
-
-        fetchProductProblemLocalizedStatuses();
+        syncLocalizedEnums();
+        handleSyncReturnedProduct();
     }, [setLocale]);
 
     useEffect(() => {
@@ -141,16 +146,23 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     name: data.product_return?.name || '',
                                 })}
                             </h1>
-                            <Button
-                                variant='warning'
-                                size={'sm'}
-                                onClick={() =>
-                                    router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id))
-                                }
-                                className='mx-4'
-                            >
-                                <RiEdit2Line />
-                            </Button>
+                            {[
+                                ReturnedProductStatusEnum.DRAFT,
+                                ReturnedProductStatusEnum.PROGRESS,
+                            ].includes(data.status) && (
+                                <Button
+                                    variant='warning'
+                                    size={'sm'}
+                                    onClick={() =>
+                                        router.visit(
+                                            route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id),
+                                        )
+                                    }
+                                    className='mx-4'
+                                >
+                                    <RiEdit2Line />
+                                </Button>
+                            )}
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-4'>
                             <div className='col-span-3 flex flex-col gap-3'>
@@ -162,7 +174,10 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     'pages.returned_product.show.labels.serial_number',
                                                 )}
                                             </p>
-                                            <p>{data.serial_number || '-'}</p>
+                                            <p>
+                                                {data.serial_number || '-'}{' '}
+                                                {data.project_sub ? `(${data.project_sub})` : ''}
+                                            </p>
                                         </div>
                                         <div className=''>
                                             <p className='font-bold'>
@@ -213,7 +228,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             >
                                                 <div>
                                                     <p className='text-sm font-bold'>
-                                                        {note.updated_at} - {note.user?.name || ''}
+                                                        {note.updated_at} - {note.user?.name || ''}{' '}
+                                                        ({note.localized_applied_status})
                                                     </p>
                                                     <p>{note.note}</p>
                                                 </div>
@@ -276,6 +292,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         setComponentResource={setComponentResource}
                                         returnedProduct={data}
                                         localizedStatuses={localizedProductProblemStatuses}
+                                        localizedCauses={localizedProductProblemCauses}
                                         handleSyncReturnedProduct={handleSyncReturnedProduct}
                                         componentResource={componentResource}
                                     />
@@ -309,7 +326,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>
                                 <TableCaption>
-                                    {(data.product_problems?.length ?? 0) > 0
+                                    {(productProblemData?.length ?? 0) > 0
                                         ? 'List Product Problems'
                                         : 'Tidak ada data. Silahkan tambahkan data.'}
                                 </TableCaption>
@@ -327,6 +344,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         </TableHead>
                                         <TableHead>
                                             {t('pages.returned_product.show.table_headers.note')}
+                                        </TableHead>
+                                        <TableHead>
+                                            {t('pages.returned_product.show.table_headers.cause')}
                                         </TableHead>
                                         <TableHead>
                                             {t('pages.returned_product.show.table_headers.status')}
@@ -347,6 +367,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 {productProblem.latest_product_problem_note?.note ??
                                                     '-'}
                                             </TableCell>
+                                            <TableCell>{productProblem.localized_cause}</TableCell>
                                             <TableCell>{productProblem.localized_status}</TableCell>
                                             <TableCell>
                                                 {/* {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_READ) && (
@@ -357,19 +378,30 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     {t('action.show')}
                                                 </Link>
                                             )} */}
-                                                {checkPermission(
-                                                    PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
-                                                ) && (
-                                                    <UpdateProductProblemStatus
-                                                        productProblem={productProblem}
-                                                        localizedStatuses={
-                                                            localizedProductProblemStatuses
-                                                        }
-                                                        handleSyncReturnedProduct={
-                                                            handleSyncReturnedProduct
-                                                        }
-                                                    />
-                                                )}
+                                                {![
+                                                    ReturnedProductStatusEnum.DONE,
+                                                    ReturnedProductStatusEnum.SCRAPPED,
+                                                ].includes(data.status) &&
+                                                    [
+                                                        ProductProblemStatusEnum.DRAFT,
+                                                        ProductProblemStatusEnum.PROGRESS,
+                                                    ].includes(productProblem.status) &&
+                                                    checkPermission(
+                                                        PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
+                                                    ) && (
+                                                        <UpdateProductProblemStatus
+                                                            productProblem={productProblem}
+                                                            localizedStatuses={
+                                                                localizedProductProblemStatuses
+                                                            }
+                                                            localizedCauses={
+                                                                localizedProductProblemCauses
+                                                            }
+                                                            handleSyncReturnedProduct={
+                                                                handleSyncReturnedProduct
+                                                            }
+                                                        />
+                                                    )}
                                                 {checkPermission(
                                                     PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE,
                                                 ) && (

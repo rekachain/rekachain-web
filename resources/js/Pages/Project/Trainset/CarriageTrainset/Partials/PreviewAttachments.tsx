@@ -91,7 +91,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
                 )}
             </DialogTrigger>
-            <DialogContent className='flex w-[350px] flex-col md:w-[70%] md:flex-row'>
+            <DialogContent className='w-[350px] md:w-[70%]'>
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className='w-full'></DialogDescription>
@@ -137,7 +137,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                         </TabsContent>
                         <TabsContent
                             value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
-                            className='w-full'
+                            // className='w-full'
                         >
                             <ScrollArea className='h-[400px] border p-4'>
                                 {electricAttachment.map((attachment, index) => (
@@ -152,7 +152,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                            <ScrollArea className='h-[400px] min-w-full border p-4'>
+                            <ScrollArea className='h-[400px] border p-4'>
                                 <PreviewPanelAttachment trainset={trainset} />
                             </ScrollArea>
                         </TabsContent>

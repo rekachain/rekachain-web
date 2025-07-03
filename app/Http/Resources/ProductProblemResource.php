@@ -12,11 +12,15 @@ class ProductProblemResource extends JsonResource {
             'returned_product' => $this->whenLoaded('returned_product'),
             'component_id' => $this->component_id,
             'component' => $this->whenLoaded('component'),
+            'cause' => $this->cause,
+            'localized_cause' => $this->cause->getLabel(),
             'status' => $this->status,
             'localized_status' => $this->status->getLabel(),
             'image_path' => $this->image_path,
             'image' => $this->image,
-            'product_problem_notes' => ProductProblemNoteResource::collection($this->whenLoaded('product_problem_notes')),
+            'product_problem_notes' => ProductProblemNoteResource::collection(
+                $this->whenLoaded('product_problem_notes', fn () => $this->product_problem_notes->sortByDesc('updated_at'))
+            ),
             'latest_product_problem_note' => ProductProblemNoteResource::make($this->product_problem_notes->last()),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

@@ -5,6 +5,7 @@ export enum ProductProblemStatusEnum {
     FIXED = 'fixed',
     PROGRESS = 'progress',
     CHANGED = 'changed',
+    RE_SET = 're-set',
 }
 
 // export function getLocalizedProductProblemStatus(status: ProductProblemStatusEnum): string {

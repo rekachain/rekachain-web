@@ -36,10 +36,13 @@ return [
             'title' => 'Halaman Utama',
             'welcome' => 'Selamat datang di Halaman Utama',
             'project' => 'Proyek',
+            'returned_product' => 'Produk Retur',
+            'show_problem_analysis' => 'Tampilkan Analisis Masalah',
             'all_project' => 'Semua Proyek',
             'all_trainset_status' => 'Status Semua Trainset',
             'select_project' => 'Pilih Proyek',
             'progress_workshops' => 'Progress untuk tiap Workshop',
+            'progress_workshops_sub' => 'Workshop Sukosari, Candisewu',
             'progress_panels' => 'Progress untuk tiap Panel',
             'panels_title' => 'Progress Panel pada WS Assembly',
             'all_workstations' => 'Progress Semua Workstation',
@@ -53,6 +56,92 @@ return [
             'panel_trainset_sub' => 'Semua Panel pada Trainset',
             'panel_progress_trainset' => 'Progress Panel Trainset ',
             'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
+            'returned_product_status' => 'Status Produk Retur',
+            'returned_product_time_difference' => 'Perbedaan Waktu Pengerjaan Produk Retur',
+            'vendor_problems' => 'Masalah Vendor',
+            'returned_product_time_min_max' => 'Pengerjaan Produk Retur',
+            'replacement_stock_threshold' => 'Stok Suku Cadang',
+            'trainset_status_progress' => 'Progress Status Trainset',
+        ],
+        'product_problem_analysis' => [
+            'title' => 'Analisis Masalah Produk',
+            'buttons' => [
+                'dispatch' => 'Analisa Masalah',
+            ],
+        ],
+        'partials' => [
+            'partials' => [
+                'product_problem_analysis_detail_dialog' => [
+                    'title' => 'Detail Analisis Masalah Produk',
+                    'subtitle' => 'Detail analisis masalah produk :component_name untuk periode :date_range.',
+                    'labels' => [
+                        'findings' => 'Temuan:',
+                        'summary' => 'Ringkasan Masalah:',
+                        'cause' => 'Kemungkinan Penyebab:',
+                        'solution' => 'Rekomendasi Solusi:',
+                    ],
+                ],
+            ],
+            'filters' => [
+                'project_placeholder' => 'Pilih Proyek',
+                'trainset_placeholder' => 'Pilih Trainset',
+                'use_merged' => 'Mode Detail',
+            ],
+            'returned_product_time_diff_chart' => [
+                'headers' => [
+                    'year_month' => 'Waktu Retur',
+                    'avg_duration' => 'Rata-Rata Lama Pengerjaan',
+                    'total_returned' => 'Total Retur',
+                    'total_problem' => 'Total Masalah',
+                ],
+                'fields' => [
+                    'day' => 'Hari',
+                    'hour' => 'Jam',
+                    'minute' => 'Menit',
+                ],
+            ],
+            'returned_product_progress_time_min_max_chart' => [
+                'label' => [
+                    'min_duration' => 'Min. Waktu Pengerjaan',
+                    'max_duration' => 'Max. Waktu Pengerjaan',
+                ],
+                'axis' => [
+                    'day' => ':count h',
+                    'hour' => ':count j',
+                    'minute' => ':count m',
+                ],
+                'tooltip' => [
+                    'title' => 'Waktu Pengerjaan',
+                    'min_duration' => 'Min. ',
+                    'max_duration' => 'Max. ',
+                ],
+            ],
+            'replacement_stock_threshold_stack_bar_chart' => [
+                'label' => [
+                    'qty' => 'Jumlah',
+                    'threshold' => 'Batas Restok',
+                ],
+                'tooltip' => [
+                    'need_restock' => 'Perlu Restok',
+                ],
+            ],
+            'vendor_problem_data_view' => [
+                'headers' => [
+                    'vendor_name' => 'Vendor',
+                    'total_sent' => 'Mengirim',
+                    'total_problem' => 'Total Masalah',
+                ],
+            ],
+            'product_problem_analysis_data_view' => [
+                'headers' => [
+                    'component_name' => 'Nama Produk',
+                    'date_range' => 'Periode',
+                    'summary' => 'Ringkasan Masalah',
+                    'cause' => 'Kemungkinan Penyebab',
+                    'solution' => 'Rekomendasi Solusi',
+                ],
+                'no_data' => 'Tidak Ada Data',
+            ],
         ],
     ],
     'dashboard_trainset' => [
@@ -2279,6 +2368,23 @@ return [
                     'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
                 ],
             ],
+            'update_asset_form' => [
+                'title' => 'Perbarui Aset',
+                'description' => 'Perbarui aplikasi mobile dan buku panduan.',
+                'fields' => [
+                    'apk' => 'Aplikasi',
+                    'apk_filepond_placeholder' => 'Letakkan .APK di sini atau klik untuk mengunggah',
+                    'book' => 'Buku Panduan',
+                    'book_filepond_placeholder' => 'Letakkan .PDF di sini atau klik untuk mengunggah',
+                ],
+                'messages' => [
+                    'updated_apk' => 'Aplikasi berhasil diperbarui!',
+                    'updated_book' => 'Buku panduan berhasil diperbarui!',
+                ],
+                'buttons' => [
+                    'submit' => 'Perbarui Aset',
+                ],
+            ],
         ],
     ],
     'trainset_attachment' => [
@@ -2415,7 +2521,8 @@ return [
             'table_headers' => [
                 'component_name' => 'Nama Komponen',
                 'description' => 'Deskripsi',
-                'note' => 'Note',
+                'note' => 'Catatan',
+                'cause' => 'Penyebab',
                 'status' => 'Status',
             ],
             'product_problems' => [
@@ -2522,6 +2629,7 @@ return [
                         'component_name' => 'Nama Komponen',
                         'component_description' => 'Deskripsi Komponen',
                         'status' => 'Status',
+                        'cause' => 'Penyebab',
                     ],
                 ],
                 'messages' => [
@@ -2536,6 +2644,7 @@ return [
                     'title' => 'Perbarui Status',
                     'description' => 'Perbarui status dari Progress Produk yang dipilih.',
                     'select_placeholder' => 'Pilih Status',
+                    'cause_placeholder' => 'Pilih Penyebab',
                 ],
                 'messages' => [
                     'updated' => 'Status Produk berhasil diperbarui!',
@@ -2564,6 +2673,8 @@ return [
                 'dialog' => [
                     'title' => '{0} Ambil Stok|{1} Scrap ke Stok',
                     'description' => '{0} Perbaiki dengan mengubah komponen terpilih dari Stok Aftersale.|{1} Scrap semua komponen yang dapat digunakan kembali ke Stok Aftersale.',
+                    'req_production' => 'Butuh Produksi Ulang',
+                    'req_production_description' => 'Centang jika produk ini membutuhkan produksi ulang.',
                 ],
                 'messages' => [
                     'resolved' => 'Permasalahan produk berhasil diselesaikan dengan sukses!',
@@ -2613,16 +2724,21 @@ return [
             'partials' => [
                 'add_request' => [
                     'title' => 'Buat Permintaan',
+                    'description' => 'Buat permintaan atau keluhan untuk retur produk.',
                     'fields' => [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
                         'type' => 'Tipe',
+                        'project' => 'Proyek',
+                        'project_placeholder' => 'Pilih Proyek',
                         'component' => 'Komponen',
                         'component_placeholder' => 'Pilih Komponen',
                         'panel' => 'Panel',
                         'panel_placeholder' => 'Pilih Panel',
                         'qty' => 'Jumlah',
                         'serial_number' => 'Nomor Seri',
+                        'type_selection' => 'Tambah Berdasarkan Pesanan',
+                        'qty_serial_number' => 'Tambah Berdasarkan Nomor Seri',
                     ],
                     'buttons' => [
                         'submit' => 'Kirim Permintaan',
@@ -2732,6 +2848,92 @@ return [
                         'component_description' => 'Deskripsi: :component_description',
                         'threshold' => 'Batas Restok: :threshold',
                         'qty' => 'Jumlah: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Permintaan Restok Produk',
+            'buttons' => [
+                'create' => 'Buat Permintaan',
+                'initiate_selection' => 'Buat Proyek',
+                'cancel_initiation' => 'Batalkan Pemilihan',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Permintaan berhasil dihapus!',
+                ],
+            ],
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Buat Proyek',
+                    'description' => 'Buat proyek restok baru untuk permintaan restok produk yang dipilih.',
+                    'buttons' => [
+                        'trigger' => 'Buat Proyek',
+                        'submit' => 'Inisiasi Proyek',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Nama Proyek',
+                        'project_description' => 'Deskripsi Proyek',
+                        'project_initial_date' => 'Tanggal Awal Proyek',
+                    ],
+                ],
+                'messages' => [
+                    'initiated' => 'Proyek berhasil diinisiasi!',
+                ],
+            ],
+            'partials' => [
+                'partials' => [
+                    'update_product_restock_status' => [
+                        'buttons' => [
+                            'update_status' => 'Perbarui Status',
+                        ],
+                        'dialog' => [
+                            'title' => 'Perbarui Status',
+                            'description' => 'Perbarui status dari Progress Restok yang dipilih.',
+                            'select_placeholder' => 'Pilih Status',
+                        ],
+                        'messages' => [
+                            'updated' => 'Status Produk berhasil diperbarui!',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'Semua',
+                    ],
+                ],
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Pelanggan',
+                        'serial_number' => 'Nomor Seri',
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Komponen',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
                     ],
                 ],
             ],

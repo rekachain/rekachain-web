@@ -81,6 +81,27 @@ class PanelAttachment extends Model {
             ]);
     }
 
+    public function project(): HasOneDeep {
+        return $this->hasOneDeep(
+            Project::class,
+            [
+                CarriagePanel::class,
+                CarriageTrainset::class,
+                Trainset::class,
+            ], [
+                'id',
+                'id',
+                'id',
+                'id',
+            ], [
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'trainset_id',
+                'project_id',
+            ]
+        );
+    }
+
     public function progress(): HasOneThrough {
         return $this->hasOneThrough(Progress::class, CarriagePanel::class, 'id', 'id', 'carriage_panel_id', 'progress_id');
     }

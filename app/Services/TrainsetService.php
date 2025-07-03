@@ -572,7 +572,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         // Step 6: Provide download response for the ZIP file
-        return response()->download($zipPath)->deleteFileAfterSend(true);
+        return response()->download($zipPath);
     }
 
     private function serialNumberTextMapper(ImageInterface $template, $productName, int $templateStartingOffsetX, $serialNo, $productNo): void {

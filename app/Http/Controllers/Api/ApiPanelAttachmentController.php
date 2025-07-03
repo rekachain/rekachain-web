@@ -176,6 +176,22 @@ class ApiPanelAttachmentController extends Controller {
                     abort(400, 'Invalid SN QR code');
                 }
                 abort(400, 'QR code not identified');
+            case IntentEnum::API_RETURNED_PRODUCT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
+                $qr = request()->get('qr_code');
+                if ($qr) {
+                    $serialPanel = $this->serialPanelService->find([
+                        'panel_attachment_id' => $panelAttachment->id,
+                        'qr_code' => $qr,
+                    ])->first();
+
+                    if ($serialPanel) {
+                        $request->merge(['intent' => IntentEnum::API_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_DETAILS->value]);
+
+                        return SerialPanelResource::make($serialPanel);
+                    }
+                    abort(400, 'Invalid SN QR code');
+                }
+                abort(400, 'QR code not identified');
             default:
                 return PanelAttachmentResource::make($panelAttachment);
         }

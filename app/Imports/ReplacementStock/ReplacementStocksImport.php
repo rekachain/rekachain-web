@@ -12,6 +12,10 @@ class ReplacementStocksImport implements ToModel, WithHeadingRow {
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row) {
+        if (empty($row['nama_komponen']) && empty($row['threshold']) && empty($row['jumlah'])) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
+
         $component = Component::firstOrCreate([
             'name' => $row['nama_komponen'],
         ]);

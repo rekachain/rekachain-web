@@ -2,16 +2,25 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ReturnedProductResource;
 use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Imports\ReturnedProduct\Sheets\ReturnedProductProblemSheetImport;
+use App\Jobs\ReturnedProduct\ReturnedProductImportJob;
 use App\Models\Component;
+use App\Models\Panel;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\IntentEnum;
+use App\Support\Enums\ProductProblemStatusEnum;
+use App\Support\Enums\ProductRestockStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Traits\Services\HandlesImages;
+use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
@@ -26,6 +35,15 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
     public function create(array $data): ?Model {
         $data = $this->handleImageUpload($data);
 
+        if (!isset($data['product_returnable_id']) && isset($data['serial_panel_id']) && $data['serial_panel_id'] !== null) {
+            $serialPanel = $this->serialPanelService()->findOrFail($data['serial_panel_id']);
+            $data['product_returnable_id'] = $serialPanel->panel_attachment->carriage_panel->panel_id;
+            $data['product_returnable_type'] = Panel::class;
+            $data['project_name'] = $serialPanel->project->name;
+            $data['trainset_name'] = $serialPanel->trainset->name;
+            $data['carriage_type'] = $serialPanel->carriage->type;
+        }
+
         $returnedProduct = parent::create($data);
 
         return $returnedProduct;
@@ -33,6 +51,17 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function update($keyOrModel, array $data): ?Model {
         $data = $this->handleImageUpload($data);
+
+        if (isset($data['status']) && $data['status'] == ReturnedProductStatusEnum::SCRAPPED->value && $keyOrModel->product_returnable_type === Panel::class) {
+            $returnedProductComponents = ReturnedProductResource::make($keyOrModel)->toArray(request()->merge(['intent' => IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value]));
+            $returnedProductComponentIds = array_column($returnedProductComponents, 'id');
+            $problemComponentIds = $keyOrModel->product_problems()->pluck('component_id')->toArray();
+            $scrappedComponentIds = array_diff($returnedProductComponentIds, $problemComponentIds);
+
+            $this->updateReplacementStocks($keyOrModel, [
+                'component_ids' => $scrappedComponentIds,
+            ], true);
+        }
 
         return parent::update($keyOrModel, $data);
     }
@@ -66,22 +95,57 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
             $productProblem->product_problem_notes()->create([
                 'user_id' => auth()->id(),
                 'note' => $data['note'],
+                'applied_status' => $data['status'],
             ]);
         }
 
         return true;
     }
 
+    private function handleImportFile(UploadedFile $file): string {
+        $tempDirectory = storage_path('app/temp/laravel-excel-import');
+        if (File::exists($tempDirectory)) {
+            File::cleanDirectory($tempDirectory);
+        } else {
+            File::makeDirectory($tempDirectory, 0755, true); // Create if it doesn't exist
+        }
+        $tempFilePath = $file->store('temp/laravel-excel-import');
+
+        return $tempFilePath;
+    }
+
     public function importData(UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport, $file);
+        try {
+            Excel::import(new ReturnedProductImport(auth()->id()), $file);
+        } catch (\Exception $e) {
+            Excel::import(new ReturnedProductProblemSheetImport(auth()->id()), $file);
+        }
+        // $userId = auth()->id();
+        // $filePath = $this->handleImportFile($file);
+        // ReturnedProductImportJob::dispatch($filePath, $userId);
 
         return true;
     }
 
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport($returnedProduct), $file);
+        try {
+            Excel::import(new ReturnedProductImport(auth()->id(), $returnedProduct), $file);
+        } catch (\Exception $e) {
+            throw new \Exception('Format Excel tidak valid', 400);
+        }
+        // $userId = auth()->id();
+        // $filePath = $this->handleImportFile($file);
+        // ReturnedProductImportJob::dispatch($filePath, $userId, $returnedProduct);
 
         return true;
+    }
+
+    public function createReturnedProductRequest(array $data): ?Model {
+        $data['status'] = ReturnedProductStatusEnum::REQUESTED->value;
+        $data['buyer_id'] = auth()->id();
+        $returnedProduct = $this->create($data);
+
+        return $returnedProduct;
     }
 
     public function createWithReturnedProductNote(array $data): ?Model {
@@ -89,25 +153,86 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
+            'applied_status' => $returnedProduct->status,
+        ]);
+
+        return $returnedProduct;
+    }
+
+    public function updateWithNote(ReturnedProduct $returnedProduct, array $data): ?Model {
+        $returnedProduct = $this->update($returnedProduct, $data);
+        $returnedProduct->returned_product_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $data['note'],
+            'applied_status' => $data['status'] ?? $returnedProduct->status,
         ]);
 
         return $returnedProduct;
     }
 
     public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
-        $replacementStocks = $this->replacementStockService()->find([
-            'component_id', 'in', $data['component_ids'],
-        ]);
-        $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($replacementStocks, $isIncrement) {
-            $this->replacementStockService()->update($stock, [
-                'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
+        DB::beginTransaction();
+        try {
+            $replacementStocks = $this->replacementStockService()->find([
+                'component_id',
+                'in',
+                $data['component_ids'],
             ]);
-        });
-        if ($isIncrement) {
-            $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
-            $returnedProduct->save();
-        }
+            $diff = array_diff($data['component_ids'], $replacementStocks->pluck('component_id')->toArray());
+            if (count($diff) > 0) {
+                foreach ($diff as $componentId) {
+                    $this->replacementStockService()->create([
+                        'component_id' => $componentId,
+                        'qty' => 0,
+                    ]);
+                }
+            }
+            $replacementStocks = $this->replacementStockService()->find([
+                'component_id',
+                'in',
+                $data['component_ids'],
+            ]);
+            $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($returnedProduct, $replacementStocks, $isIncrement) {
+                $this->replacementStockService()->update($stock, [
+                    'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
+                ]);
+                if ($stock->qty <= $stock->threshold) {
+                    $this->productRestockService()->create([
+                        'returned_product_id' => $returnedProduct->id,
+                        'product_restockable_id' => $returnedProduct->product_returnable_id,
+                        'product_restockable_type' => $returnedProduct->product_returnable_type,
+                        'status' => ProductRestockStatusEnum::REQUESTED->value,
+                    ]);
+                }
+            });
+            if ($isIncrement) {
+                if (isset($data['req_production']) && $data['req_production']) {
+                    $this->productRestockService()->create([
+                        'returned_product_id' => $returnedProduct->id,
+                        'product_restockable_id' => $returnedProduct->product_returnable_id,
+                        'product_restockable_type' => $returnedProduct->product_returnable_type,
+                        'status' => ProductRestockStatusEnum::REQUESTED->value,
+                    ]);
+                }
+                $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
+                $returnedProduct->save();
+            } else {
+                foreach ($data['component_ids'] as $value) {
+                    $productProblem = $this->productProblemService()->find([
+                        'component_id' => $value,
+                        'returned_product_id' => $returnedProduct->id,
+                    ])->first();
+                    $this->productProblemService()->update($productProblem, [
+                        'status' => ProductProblemStatusEnum::CHANGED->value,
+                    ]);
+                }
+            }
+            DB::commit();
 
-        return true;
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

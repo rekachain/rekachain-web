@@ -59,7 +59,7 @@ export default function ReplacementStockTableView({
                             <TableCell>{stock.component?.description || '-'}</TableCell>
                             <TableCell>{stock.qty}</TableCell>
                             <TableCell>{stock.threshold}</TableCell>
-                            <TableCell>
+                            <TableCell className='flex flex-wrap gap-2'>
                                 {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
                                     <AddStock
                                         replacementStock={stock}
@@ -68,7 +68,7 @@ export default function ReplacementStockTableView({
                                 )}
                                 {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_DELETE) && (
                                     <Button
-                                        variant='link'
+                                        variant='outline'
                                         onClick={() => handleReplacementStockDeletion(stock.id)}
                                     >
                                         {t('action.delete')}

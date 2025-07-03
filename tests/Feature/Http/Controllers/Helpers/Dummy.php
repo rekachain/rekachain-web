@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Helpers;
 
 use App\Models\ProductProblem;
 use App\Models\ProductProblemNote;
+use App\Models\ProductRestock;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
 use App\Models\ReturnedProductNote;
@@ -503,5 +504,8 @@ class Dummy {
     }
     public function createReplacementStock() {
         return ReplacementStock::factory()->create();
+    }
+    public function createProductRestock() {
+        return ProductRestock::factory()->create();
     }
 }

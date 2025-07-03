@@ -12,6 +12,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ReturnedProductResource extends JsonResource {
     public function toArray(Request $request): array {
         $intent = $request->get('intent');
+        $projectSub = $this->project_name ? $this->project_name . ' - ' : null;
+        $projectSub = $this->trainset_name ? $projectSub . $this->trainset_name . ' - ' : $projectSub;
+        $projectSub = $this->carriage_type ? $projectSub . $this->carriage_type : $projectSub;
 
         switch ($intent) {
             case IntentEnum::WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS->value:
@@ -42,7 +45,7 @@ class ReturnedProductResource extends JsonResource {
             'product_return' => $this->whenLoaded('product_returnable'),
             'buyer_id' => $this->buyer_id,
             'buyer' => $this->whenLoaded('buyer', function () {
-                return checkPermissionsAndRoles(PermissionEnum::RETURNED_PRODUCT_READ, [RoleEnum::WORKER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true) ?
+                return checkPermissionsAndRoles([PermissionEnum::RETURNED_PRODUCT_READ], [RoleEnum::WORKER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true) ?
                     UserResource::make($this->buyer) : [
                         'name' => $this->buyer->name,
                         'phone_number' => $this->buyer->phone_number,
@@ -51,6 +54,9 @@ class ReturnedProductResource extends JsonResource {
             'qty' => $this->qty,
             'serial_panel_id' => $this->serial_panel_id,
             'serial_panel' => $this->whenLoaded('serial_panel'),
+            'project_sub' => $projectSub ?? $this->whenLoaded('serial_panel', function () {
+                return $this->serial_panel->project->name . ' - ' . $this->serial_panel->trainset->name . ' - ' . $this->serial_panel->carriage->type;
+            }),
             'serial_number' => $this->serial_number,
             'status' => $this->status,
             'localized_status' => $this->status->getLabel(),

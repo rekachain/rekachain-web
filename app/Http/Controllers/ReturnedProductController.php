@@ -29,8 +29,9 @@ class ReturnedProductController extends Controller {
         $perPage = $request->get('perPage', 10);
         if (!checkPermissions(PermissionEnum::RETURNED_PRODUCT_READ, true)) {
             $request->query->add(['column_filters' => ['buyer_id' => auth()->id()]]);
+        } else {
+            $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => [ReturnedProductStatusEnum::REQUESTED->value]])]);
         }
-        $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => [ReturnedProductStatusEnum::REQUESTED->value]])]);
         if ($this->ajax()) {
             return ReturnedProductResource::collection($this->returnedProductService->getAllPaginated($request->query(), $perPage));
         }
@@ -50,6 +51,8 @@ class ReturnedProductController extends Controller {
                     return $this->returnedProductService->importData($request->file('import_file'));
                 case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE->value:
                     return $this->returnedProductService->createWithReturnedProductNote($request->validated());
+                case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST->value:
+                    return $this->returnedProductService->createReturnedProductRequest($request->validated());
             }
             $returnedProduct = $this->returnedProductService->create($request->validated());
 
@@ -76,6 +79,10 @@ class ReturnedProductController extends Controller {
     }
 
     public function edit(ReturnedProduct $returnedProduct) {
+        if ($returnedProduct->status !== ReturnedProductStatusEnum::DRAFT && $returnedProduct->status !== ReturnedProductStatusEnum::PROGRESS && $returnedProduct->status !== ReturnedProductStatusEnum::REQUESTED) {
+            abort(403, 'Product cannot be edited.');
+            // return redirect()->route('returned-products.show', $returnedProduct)->with('error', 'Product cannot be edited.');
+        }
         $returnedProduct = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
 
         return inertia('ReturnedProduct/Edit', compact('returnedProduct'));

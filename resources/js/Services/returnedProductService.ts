@@ -11,6 +11,7 @@ export const returnedProductService = {
         componentId: number | null,
         componentName: string,
         componentDescription: string,
+        selectedCause: string,
         selectedStatus: string,
         image_path: any[],
         note: string | null,
@@ -19,6 +20,7 @@ export const returnedProductService = {
         formData.append('component_id', componentId?.toString() ?? '');
         formData.append('new_component_name', componentName);
         formData.append('new_component_description', componentDescription);
+        formData.append('cause', selectedCause);
         formData.append('status', selectedStatus);
         image_path.length > 0 && formData.append('image_path', image_path[0]);
         note && formData.append('note', note ?? '');

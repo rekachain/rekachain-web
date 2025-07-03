@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Panel extends Model {
-    use HasFactory, HasFilterable;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'name',
@@ -21,6 +23,11 @@ class Panel extends Model {
     protected $filterable = [
         'searchs' => ['name', 'description'],
         'columns' => ['progress_id'],
+        'relation_columns' => [
+            'projects' => [
+                'id',
+            ],
+        ],
     ];
 
     public function progress(): BelongsTo {
@@ -53,5 +60,23 @@ class Panel extends Model {
 
     public function canBeDeleted(): bool {
         return $this->carriages()->doesntExist() && $this->carriage_panel_components()->doesntExist() ?? false;
+    }
+
+    public function projects(): HasManyDeep {
+        return $this->hasManyDeep(Project::class, [
+            CarriagePanel::class,
+            CarriageTrainset::class,
+            Trainset::class,
+        ], [
+            'panel_id',
+            'id',
+            'id',
+            'id',
+        ], [
+            'id',
+            'carriage_trainset_id',
+            'trainset_id',
+            'project_id',
+        ]);
     }
 }

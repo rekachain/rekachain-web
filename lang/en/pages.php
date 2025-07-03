@@ -36,10 +36,13 @@ return [
             'title' => 'Dashboard',
             'welcome' => 'Welcome to the Dashboard',
             'project' => 'Project',
+            'returned_product' => 'Returned Product',
+            'show_problem_analysis' => 'Show Problem Analysis',
             'all_project' => 'All Project',
             'all_trainset_status' => 'Status for All Trainset',
             'select_project' => 'Choose Project',
             'progress_workshops' => 'Progress for each Workshop',
+            'progress_workshops_sub' => 'Workshop Sukosari, Candisewu',
             'progress_panels' => 'Progress for each Panel',
             'panels_title' => 'Progress Panel in Assembly WS',
             'all_workstations' => 'Progress for All Workstation',
@@ -53,6 +56,92 @@ return [
             'panel_trainset_sub' => 'All Panel at',
             'panel_progress_trainset' => 'Panel Trainset Progresses ',
             'panel_progress_trainset_sub' => 'Panel Trainset Progresses at ',
+            'returned_product_status' => 'Returned Product Status',
+            'returned_product_time_difference' => 'Returned Product Time Difference',
+            'vendor_problems' => 'Vendor Problems',
+            'returned_product_time_min_max' => 'Returned Product Time Min Max',
+            'replacement_stock_threshold' => 'Replacement Stock Threshold',
+            'trainset_status_progress' => 'Trainset Status Progress',
+        ],
+        'product_problem_analysis' => [
+            'title' => 'Product Problem Analysis',
+            'buttons' => [
+                'dispatch' => 'Analyze Problems',
+            ],
+        ],
+        'partials' => [
+            'partials' => [
+                'product_problem_analysis_detail_dialog' => [
+                    'title' => 'Product Problem Analysis Detail',
+                    'subtitle' => 'Product :component_name problem analysis detail for period :date_range.',
+                    'labels' => [
+                        'findings' => 'Findings:',
+                        'summary' => 'Problem Summary:',
+                        'cause' => 'Possible Cause:',
+                        'solution' => 'Recommended Solution:',
+                    ],
+                ],
+            ],
+            'filters' => [
+                'project_placeholder' => 'Select Project',
+                'trainset_placeholder' => 'Select Trainset',
+                'use_merged' => 'Detailed Mode',
+            ],
+            'returned_product_time_diff_chart' => [
+                'headers' => [
+                    'year_month' => 'Year Month',
+                    'avg_duration' => 'Avg. Time Execution',
+                    'total_returned' => 'Total Return',
+                    'total_problem' => 'Total Problem',
+                ],
+                'fields' => [
+                    'day' => 'Days',
+                    'hour' => 'Hours',
+                    'minute' => 'Minutes',
+                ],
+            ],
+            'returned_product_progress_time_min_max_chart' => [
+                'label' => [
+                    'min_duration' => 'Min. Time Execution',
+                    'max_duration' => 'Max. Time Execution',
+                ],
+                'axis' => [
+                    'day' => ':count d',
+                    'hour' => ':count h',
+                    'minute' => ':count m',
+                ],
+                'tooltip' => [
+                    'title' => 'Time Execution',
+                    'min_duration' => 'Min. ',
+                    'max_duration' => 'Max. ',
+                ],
+            ],
+            'replacement_stock_threshold_stack_bar_chart' => [
+                'label' => [
+                    'qty' => 'Quantity',
+                    'threshold' => 'Threshold',
+                ],
+                'tooltip' => [
+                    'need_restock' => 'Need Restock',
+                ],
+            ],
+            'vendor_problem_data_view' => [
+                'headers' => [
+                    'vendor_name' => 'Vendor',
+                    'total_sent' => 'Sends',
+                    'total_problem' => 'Total Problem',
+                ],
+            ],
+            'product_problem_analysis_data_view' => [
+                'headers' => [
+                    'component_name' => 'Product Name',
+                    'date_range' => 'Date Range',
+                    'summary' => 'Problem Summary',
+                    'cause' => 'Possible Cause',
+                    'solution' => 'Recommended Solution',
+                ],
+                'no_data' => 'No Data',
+            ],
         ],
     ],
     'dashboard_trainset' => [
@@ -2279,6 +2368,23 @@ return [
                     'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
                 ],
             ],
+            'update_asset_form' => [
+                'title' => 'Update Assets',
+                'description' => 'Update the mobile application and manual book.',
+                'fields' => [
+                    'apk' => 'Application',
+                    'apk_filepond_placeholder' => 'Drop APK here or click to upload',
+                    'book' => 'Manual Book',
+                    'book_filepond_placeholder' => 'Drop PDF here or click to upload',
+                ],
+                'messages' => [
+                    'updated_apk' => 'Application updated successfully!',
+                    'updated_book' => 'Manual book updated successfully!',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Assets',
+                ],
+            ],
         ],
     ],
     'trainset_attachment' => [
@@ -2416,6 +2522,7 @@ return [
                 'component_name' => 'Component Name',
                 'description' => 'Description',
                 'note' => 'Note',
+                'cause' => 'Cause',
                 'status' => 'Status',
             ],
             'product_problems' => [
@@ -2522,6 +2629,7 @@ return [
                         'component_name' => 'Component Name',
                         'component_description' => 'Component Description',
                         'status' => 'Status',
+                        'cause' => 'Cause',
                     ],
                 ],
                 'messages' => [
@@ -2536,6 +2644,7 @@ return [
                     'title' => 'Update Status',
                     'description' => 'Update the status of the selected Product Progress.',
                     'select_placeholder' => 'Select Status',
+                    'cause_placeholder' => 'Select Cause',
                 ],
                 'messages' => [
                     'updated' => 'Product status updated successfully!',
@@ -2564,6 +2673,8 @@ return [
                 'dialog' => [
                     'title' => '{0} Change from Stock|{1} Scrap into Stock',
                     'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                    'req_production' => 'Need Re-Production',
+                    'req_production_description' => 'Check this if the component needs re-production.',
                 ],
                 'messages' => [
                     'resolved' => 'Problem resolved successfully!',
@@ -2613,16 +2724,21 @@ return [
             'partials' => [
                 'add_request' => [
                     'title' => 'Make Request',
+                    'description' => 'Make a request or complain to return a product.',
                     'fields' => [
                         'name' => 'Name',
                         'description' => 'Description',
                         'type' => 'Type',
+                        'project' => 'Project',
+                        'project_placeholder' => 'Select Project',
                         'component' => 'Component',
                         'component_placeholder' => 'Select Component',
                         'panel' => 'Panel',
                         'panel_placeholder' => 'Select Panel',
                         'qty' => 'Quantity',
                         'serial_number' => 'Serial Number',
+                        'type_selection' => 'Add By Order',
+                        'qty_serial_number' => 'Add By Serial Number',
                     ],
                     'buttons' => [
                         'submit' => 'Send Request',
@@ -2732,6 +2848,92 @@ return [
                         'component_description' => 'Description: :component_description',
                         'threshold' => 'Threshold: :threshold',
                         'qty' => 'Quantity: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Product Re-Stocks Requests',
+            'buttons' => [
+                'create' => 'Create Request',
+                'initiate_selection' => 'Make Project',
+                'cancel_initiation' => 'Cancel Selection',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Request deleted successfully!',
+                ],
+            ],
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Initiate Project',
+                    'description' => 'Initiate a new restock project for the selected product restocks.',
+                    'buttons' => [
+                        'trigger' => 'Make Project',
+                        'submit' => 'Initiate Project',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Project Name',
+                        'project_description' => 'Project Description',
+                        'project_initial_date' => 'Project Initial Date',
+                    ],
+                ],
+                'messages' => [
+                    'initiated' => 'Project initiated successfully!',
+                ],
+            ],
+            'partials' => [
+                'partials' => [
+                    'update_product_restock_status' => [
+                        'buttons' => [
+                            'update_status' => 'Update Status',
+                        ],
+                        'dialog' => [
+                            'title' => 'Update Status',
+                            'description' => 'Update the status of the selected Restock Progress.',
+                            'select_placeholder' => 'Select Status',
+                        ],
+                        'messages' => [
+                            'updated' => 'Product status updated successfully!',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'All',
+                    ],
+                ],
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Customer',
+                        'serial_number' => 'Serial Number',
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'status' => 'Status',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
+                        'type' => 'Type: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
                     ],
                 ],
             ],

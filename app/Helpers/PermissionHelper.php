@@ -19,8 +19,8 @@ class PermissionHelper {
      * @throws HttpException
      */
     public static function check(PermissionEnum|array $permissions = [], RoleEnum|array $roles = [], bool $returnBool = false, bool $strict = false): ?bool {
-        if (self::isTestRoute()) {
-            return true; // Bypass checks for test routes
+        if (self::isTestRoute() || Auth::user()->hasRole(RoleEnum::SUPER_ADMIN->value)) {
+            return true; // Bypass checks for test routes or if the user is a superadmin
         }
 
         if (empty($permissions) && empty($roles)) {
@@ -43,11 +43,11 @@ class PermissionHelper {
             $check = $strict ? ($permissionsCheck && $rolesCheck) : ($permissionsCheck || $rolesCheck);
         }
 
-        return $check ? true : abort(403, __('exception.auth.permission_and_role.permission_and_role_exception', [
+        return $check ? true : ($returnBool ? false : abort(403, __('exception.auth.permission_and_role.permission_and_role_exception', [
             'permission' => implode(', ', array_map(fn ($perm) => $perm->value, $permissions)),
             'conjunction' => $strict ? '&' : '/',
             'role' => implode(', ', array_map(fn ($role) => $role->value, $roles)),
-        ]));
+        ])));
 
     }
 
@@ -61,7 +61,7 @@ class PermissionHelper {
      * @throws HttpException
      */
     public static function checkPermissions(PermissionEnum|array $permissions, bool $returnBool = false, bool $strict = false): ?bool {
-        if (self::isTestRoute()) {
+        if (self::isTestRoute() || Auth::user()->hasRole(RoleEnum::SUPER_ADMIN->value)) {
             return true; // Bypass checks for test routes
         }
 
@@ -90,7 +90,7 @@ class PermissionHelper {
      * Check user roles.
      */
     public static function checkRoles(RoleEnum|array $roles, bool $returnBool = false, bool $strict = false): ?bool {
-        if (self::isTestRoute()) {
+        if (self::isTestRoute() || Auth::user()->hasRole(RoleEnum::SUPER_ADMIN->value)) {
             return true; // Bypass checks for test routes
         }
 

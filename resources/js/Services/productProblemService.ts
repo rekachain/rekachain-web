@@ -7,11 +7,13 @@ export const productProblemService = {
     ...serviceFactory<ProductProblemResource>(ROUTES.PRODUCT_PROBLEMS),
     updateWithNote: async (
         productProblemId: number,
+        selectedCause: string,
         selectedStatus: string,
         image_path: any[],
         note: string | null,
     ) => {
         const formData = new FormData();
+        formData.append('cause', selectedCause);
         formData.append('status', selectedStatus);
         image_path.length > 0 && formData.append('image_path', image_path[0]);
         note && formData.append('note', note ?? '');

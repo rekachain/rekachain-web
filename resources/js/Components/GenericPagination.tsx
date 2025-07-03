@@ -8,14 +8,25 @@ import {
 } from '@/Components/UI/pagination';
 import { PAGINATION_NAVIGATOR } from '@/Support/Constants/paginationNavigator';
 import { PaginateMeta, PaginateMetaLink } from '@/Support/Interfaces/Others';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import {
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    ChevronsLeftIcon,
+    ChevronsRightIcon,
+} from 'lucide-react';
+import { Button } from './UI/button';
 
 export default function ({
     meta,
     handleChangePage,
+    isCompact = false,
 }: {
     meta?: PaginateMeta;
     handleChangePage: (page: number) => void;
+    isCompact?: boolean;
 }) {
+    const { t } = useLaravelReactI18n();
     const fixPagination = (link: string) => {
         // convert link to number, if it's not a number, it's a string
         const pageNumber = Number(link);
@@ -108,12 +119,68 @@ export default function ({
             <Pagination>
                 <PaginationContent className=' '>
                     <div className='grid grid-cols-8 md:flex'>
-                        {meta.links.map((link, index) => (
-                            <ConditionallyRenderPagination
-                                link={link}
-                                key={`${link.label}-${index}`}
-                            />
-                        ))}
+                        {!isCompact ? (
+                            meta.links.map((link, index) => (
+                                <ConditionallyRenderPagination
+                                    link={link}
+                                    key={`${link.label}-${index}`}
+                                />
+                            ))
+                        ) : (
+                            <>
+                                <div className='flex items-center justify-between px-4'>
+                                    <div className='flex w-full items-center gap-8 lg:w-fit'>
+                                        <div className='flex w-fit items-center justify-center text-sm font-medium'>
+                                            {t('pagination.current_page_of_total_pages', {
+                                                current_page: meta.current_page,
+                                                total_pages: meta.last_page,
+                                            })}
+                                        </div>
+                                        <div className='ml-auto flex items-center gap-2 lg:ml-0'>
+                                            <Button
+                                                variant='outline'
+                                                onClick={() => handleChangePage(1)}
+                                                disabled={meta.current_page === 1}
+                                                className='flex h-8 w-8 p-0'
+                                            >
+                                                <ChevronsLeftIcon />
+                                            </Button>
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() =>
+                                                    handleChangePage(meta.current_page - 1)
+                                                }
+                                                disabled={meta.current_page - 1 === 0}
+                                                className='size-8'
+                                            >
+                                                <ChevronLeftIcon />
+                                            </Button>
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() =>
+                                                    handleChangePage(meta.current_page + 1)
+                                                }
+                                                disabled={meta.current_page + 1 > meta.last_page}
+                                                className='size-8'
+                                            >
+                                                <ChevronRightIcon />
+                                            </Button>
+                                            <Button
+                                                variant='outline'
+                                                size='icon'
+                                                onClick={() => handleChangePage(meta.last_page)}
+                                                disabled={meta.current_page === meta.last_page}
+                                                className='flex h-8 w-8 p-0'
+                                            >
+                                                <ChevronsRightIcon />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </PaginationContent>
             </Pagination>

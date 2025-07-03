@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'groq' => [
+        'url' => env('GROQ_API_URL'),
+        'key' => env('GROQ_API_KEY'),
+        'model' => env('GROQ_API_MODEL'),
+    ],
+
 ];

@@ -21,4 +21,6 @@ return [
 
     'previous_label' => 'Previous',
     'next_label' => 'Next',
+
+    'current_page_of_total_pages' => 'Page :current_page of :total_pages',
 ];

@@ -71,28 +71,46 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.updated_at}</TableCell>
                             {(returnedProduct.status === ReturnedProductStatusEnum.REQUESTED ||
                                 checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE)) && (
-                                <TableCell>
-                                    {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                <TableCell className='flex flex-wrap gap-2'>
+                                    {returnedProduct.status !==
+                                    ReturnedProductStatusEnum.REQUESTED ? (
                                         <Link
                                             href={route(
-                                                `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                                `${ROUTES.RETURNED_PRODUCTS}.show`,
                                                 returnedProduct.id,
                                             )}
-                                            className={buttonVariants({ variant: 'link' })}
+                                            className={buttonVariants({ variant: 'outline' })}
                                         >
-                                            {t('action.edit')}
+                                            {t('action.show')}
                                         </Link>
-                                    )}
-                                    {returnedProduct.status ===
-                                        ReturnedProductStatusEnum.REQUESTED && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() =>
-                                                handleRequestedReturnDeletion(returnedProduct.id)
-                                            }
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
+                                    ) : (
+                                        checkPermission(
+                                            PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE,
+                                        ) && (
+                                            <>
+                                                <Link
+                                                    href={route(
+                                                        `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                                        returnedProduct.id,
+                                                    )}
+                                                    className={buttonVariants({
+                                                        variant: 'outline',
+                                                    })}
+                                                >
+                                                    {t('action.edit')}
+                                                </Link>
+                                                <Button
+                                                    variant='outline'
+                                                    onClick={() =>
+                                                        handleRequestedReturnDeletion(
+                                                            returnedProduct.id,
+                                                        )
+                                                    }
+                                                >
+                                                    {t('action.delete')}
+                                                </Button>
+                                            </>
+                                        )
                                     )}
                                 </TableCell>
                             )}
