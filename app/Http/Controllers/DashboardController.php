@@ -44,7 +44,8 @@ class DashboardController extends Controller {
                 case IntentEnum::WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS->value:
                     return $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
                 case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
-                    return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+                    return DashboardResource::collection($this->dashboardService->getReplacementStockThreshold($request->query()));
+                    // return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
                 case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
                     return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
                 case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
@@ -66,7 +67,8 @@ class DashboardController extends Controller {
             $returned_product_status = $this->dashboardService->showReturnedProductStatusSum($request->query());
             $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
-            $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+            // $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+            $replacement_stocks = DashboardResource::collection($this->dashboardService->getReplacementStockThreshold($request->query()));
             $vendor_problems = DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ComponentResource;
 use App\Jobs\Dashboard\ProductProblemAnalysis;
 use App\Models\PanelAttachment;
 use App\Models\ReturnedProduct;
@@ -15,6 +16,7 @@ use App\Support\Interfaces\Services\ComponentServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
@@ -34,6 +36,7 @@ class DashboardService {
         protected PanelServiceInterface $panelService,
         protected ReturnedProductServiceInterface $returnedProductService,
         protected ComponentServiceInterface $componentService,
+        protected ReplacementStockServiceInterface $replacementStockService, 
     ) {}
 
     public function showGraph(array $data = []) {
@@ -479,5 +482,29 @@ class DashboardService {
         ProductProblemAnalysis::dispatch($transformed->toArray());
 
         return response()->json(['message' => 'Analysis is dispatched.'], 200);
+    }
+
+    
+
+    public function getReplacementStockThreshold(array $request) {
+        $replacements = $this->replacementStockService->with(['component'])->getAll($request);
+
+        // Transform with localization
+        $transformed = $replacements->filter(function ($item) {
+            return $item->qty / ($item->qty + $item->threshold) <= 0.75;
+        })->sortBy(function ($item) {
+            return $item->qty / ($item->qty + $item->threshold);
+        })->map(function ($item) {
+            return (object) [
+                'intent' => IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK_THRESHOLD->value,
+                'component' => $item->component,
+                'qty' => $item->qty,
+                // 'threshold' => $item->threshold < $item->qty ? $item->threshold : 0,
+                'threshold' => $item->threshold,
+                'over_threshold' => $item->threshold >= $item->qty ? $item->threshold : 0,
+            ];
+        });
+
+        return $transformed;
     }
 }

@@ -40,6 +40,13 @@ class DashboardResource extends JsonResource {
                     'total_problem' => $this->total_problem,
                     'problem_percent' => number_format($this->problem_percent, 2),
                 ];
+            case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK_THRESHOLD->value:
+                return [
+                    'component' => ComponentResource::make($this->component),
+                    'qty' => $this->qty,
+                    'threshold' => $this->threshold,
+                    'over_threshold' => $this->over_threshold,
+                ];
             default:
                 return [];
         }
